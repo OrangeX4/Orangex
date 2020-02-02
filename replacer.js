@@ -1,14 +1,4 @@
 // Test:
-// var str = "jsx js ddd  ddd 中文 中Eng 1数字-Head $";
-// var patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/g;
-// // var match = unique(str.match(patt));
-// var match = str.match(patt);
-// console.log(match);
-// for (var i in match) {
-//     //console.log(match[i]);
-//     str = str.replace(match[i], "Test");
-//     console.log(str);
-// }
 var str = "jsx js ddd  ddd 中文 中Eng 1数字-Head $";
 var dict = '{"jsx":"爪纹","ddd":"顶顶顶"}';
 console.log(replaceContent(str,dict));
