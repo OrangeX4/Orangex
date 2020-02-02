@@ -3,8 +3,9 @@
 // var dict = {"jsx":"爪纹","ddd":"顶顶顶"};
 // console.log(replaceContent(str,dict));
 
-module.exports ={replaceContent:replaceContent};
+//module.exports ={replaceContent:replaceContent};
 
+exports.replaceContent = replaceContent;
 function replaceContent(content, dict) {
     // var dict = JSON.parse(dictionary);
     var patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/g;
@@ -23,8 +24,6 @@ function replaceContent(content, dict) {
     }
     return {content:content,miss:miss};
 }
-
-
 
 // function unique(arr) {
 //     var res = [];
