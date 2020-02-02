@@ -1,8 +1,9 @@
 // Test:
-var str = "jsx js ddd  ddd 中文 中Eng 1数字-Head $";
-var dict = {"jsx":"爪纹","ddd":"顶顶顶"};
-console.log(replaceContent(str,dict));
+// var str = "jsx js ddd  ddd 中文 中Eng 1数字-Head $";
+// var dict = {"jsx":"爪纹","ddd":"顶顶顶"};
+// console.log(replaceContent(str,dict));
 
+module.exports ={replaceContent:replaceContent};
 
 function replaceContent(content, dict) {
     // var dict = JSON.parse(dictionary);
@@ -22,6 +23,8 @@ function replaceContent(content, dict) {
     }
     return {content:content,miss:miss};
 }
+
+
 
 // function unique(arr) {
 //     var res = [];
