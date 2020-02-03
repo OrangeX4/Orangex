@@ -1,15 +1,39 @@
-// Test:
-// var str = "jsx js ddd  ddd 中文 中Eng 1数字-Head $";
-// var dict = {"jsx":"爪纹","ddd":"顶顶顶"};
-// console.log(replaceContent(str,dict));
-
 //module.exports ={replaceContent:replaceContent};
 var split = "￥";
-exports.setSplit = function(splitVar){
+exports.setSplit = function (splitVar) {
     split = splitVar;
 };
 exports.replaceContent = replaceContent;
 exports.replaceWithSplit = replaceWithSplit;
+exports.mergeDict = mergeDict;
+exports.turnDict = turnDict;
+
+function mergeDict() {
+    mergeValue = {};
+    for (i in arguments) {
+        arg = arguments[i];
+        for (j in arg) {
+            mergeValue[j] = arg[j];
+        }
+    }
+    return mergeValue;
+}
+
+function turnDict(dict) {
+    returnDict = {};
+    for (i in dict) {
+        if (returnDict[dict[i]]) {
+            throw {
+                name: "TypeError",
+                message: `字典的键值对没有唯一对应关系:${returnDict[dict[i]]}:${dict[i]}与${i}:${dict[i]}冲突.`
+            }
+        } else {
+            returnDict[dict[i]] = i;
+        }
+    }
+    return returnDict;
+}
+
 function replaceContent(content, dict) {
     // var dict = JSON.parse(dictionary);
     var patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/g;
@@ -28,25 +52,32 @@ function replaceContent(content, dict) {
         }
         // console.log(str);
     }
-    return {content:content,success:success,fail:fail};
+    return {
+        content: content,
+        success: success,
+        fail: fail
+    };
 }
 
-function replaceWithSplit(content,dict){
+function replaceWithSplit(content, dict) {
     var strArray = content.split(split);
     var str = "";
     var objectArray = [];
     var returnValue = {};
-    for(i in strArray){
-        if(i % 2 == 0){
-            returnValue = replaceContent(strArray[i],dict);
+    for (i in strArray) {
+        if (i % 2 == 0) {
+            returnValue = replaceContent(strArray[i], dict);
             str = str + returnValue.content;
             objectArray.push(returnValue);
-        }else{
+        } else {
             str = str + strArray[i];
             objectArray.push(strArray[i]);
         }
     }
-    return {content:str,returnArray:objectArray};
+    return {
+        content: str,
+        returnArray: objectArray
+    };
 }
 
 // function unique(arr) {

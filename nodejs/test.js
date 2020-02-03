@@ -1,6 +1,7 @@
 var replacer = require('./replacer');
 var utils = require('./utils');
 var str = "jsx js if  ddd  ddd ￥中文 中Eng￥ 1数字-Head $";
+{
 // var str = `function replaceContent(content, dict) {
 //     // var dict = JSON.parse(dictionary);
 //     var patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/g;
@@ -21,12 +22,21 @@ var str = "jsx js if  ddd  ddd ￥中文 中Eng￥ 1数字-Head $";
 //     }
 //     return {content:content,success:success,fail:fail};
 // }`;
-utils.readWithWebAndRedirect(testFunc);
+// utils.readWithWebAndRedirect(testFunc);
+}
+// utils.readWithFile(testFunc);
+testDict = {a:"1",b:"2",c:"3",c:"4",d:"5",e:"6"}
+console.log("Merge:");
+console.log(replacer.mergeDict(
+    {a:"1",b:"2",c:"3"},
+    {c:"4",d:"5",e:"6"}
+));
+console.log("Turn:");
+console.log(replacer.turnDict(testDict));
+
 
 function testFunc(dict) {
-    // console.log(dict);
     replacer.setSplit("￥");
-    // var dict = {"jsx":"爪纹","ddd":"顶顶顶"};
     var returnObject = replacer.replaceWithSplit(str, JSON.parse(dict).common);
     console.log("All:");
     console.log(returnObject);
