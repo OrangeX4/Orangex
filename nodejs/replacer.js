@@ -1,12 +1,14 @@
 //module.exports ={replaceContent:replaceContent};
 var split = "￥";
-exports.setSplit = function (splitVar) {
-    split = splitVar;
-};
+exports.setSplit = setSplit;
 exports.replaceContent = replaceContent;
 exports.replaceWithSplit = replaceWithSplit;
 exports.mergeDict = mergeDict;
 exports.turnDict = turnDict;
+
+function setSplit(splitVar) {
+    split = splitVar;
+}
 
 function mergeDict() {
     mergeValue = {};
