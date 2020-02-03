@@ -2,8 +2,14 @@ var replacer = require('./replacer');
 
 function test(dict) {
     var str = "jsx js if  ddd  ddd ￥中文 中Eng￥ 1数字-Head $";
+    replacer.setSplit("￥");
     // var dict = {"jsx":"爪纹","ddd":"顶顶顶"};
-    console.log(replacer.replaceWithSplit(str, dict));
+    var returnObject = replacer.replaceWithSplit(str, dict);
+    console.log("All:");
+    console.log(returnObject);
+    console.log("Array content:");
+    console.log(returnObject.returnArray[0]);
+    
 }
 
 var fs = require("fs");
@@ -31,4 +37,4 @@ readerStream.on('error', function (err) {
     console.log(err.stack);
 });
 
-console.log("程序执行完毕");
+// console.log("程序执行完毕");

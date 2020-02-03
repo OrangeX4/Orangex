@@ -17,7 +17,7 @@ function replaceContent(content, dict) {
     var match = content.match(patt);
     var fail = [];
     var success = [];
-    console.log(match);
+    // console.log(match);
     for (var i in match) {
         // console.log(match[i]);n
         if (dict[match[i]]) {
