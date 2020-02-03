@@ -1,6 +1,6 @@
 var replacer = require('./replacer');
 
-function test(dict) {
+function test_native(dict) {
     var str = "jsx js if  ddd  ddd ￥中文 中Eng￥ 1数字-Head $";
     replacer.setSplit("￥");
     // var dict = {"jsx":"爪纹","ddd":"顶顶顶"};
@@ -12,11 +12,15 @@ function test(dict) {
     
 }
 
+function test_web(){
+
+}
+
 var fs = require("fs");
 var data = '';
 
 // 创建可读流
-var readerStream = fs.createReadStream('./map/dict001.json');
+var readerStream = fs.createReadStream('./map/dict.json');
 
 // 设置编码为 utf8。
 readerStream.setEncoding('UTF8');
@@ -30,7 +34,7 @@ readerStream.on('end', function () {
     // console.log(data);
 
     dictionary = JSON.parse(data);
-    test(dictionary.common);
+    test_native(dictionary.common);
 });
 
 readerStream.on('error', function (err) {
