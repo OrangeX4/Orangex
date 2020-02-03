@@ -1,22 +1,9 @@
-// //node-fetch  https://github.com/bitinn/node-fetch
-// var fetch = require("node-fetch");
-// var fs = require("fs");
-
-// function download(u, p) {
-//     return fetch(url, {
-//         method: 'GET',
-//         headers: { 'Content-Type': 'application/octet-stream' },
-//     }).then(res => res.buffer()).then(_buffer => {
-//         // fs.writeFile(p, _buffer, "binary", function (err) {
-//         //     console.log(err || p);
-//         // });
-//         console.log(_buffer.toString("utf8"));
-//     });
-// }
-// ////////======= 
-// var url = "https://github.com/OrangeX4/Orangex/releases/download/0.0.2/dict.json";
-// download(url, url.split("/").reverse()[0])
-readWithWebAndRedirect(str => console.log(str));
+var fetch = require("node-fetch");
+var fs = require("fs");
+// readWithWebAndRedirect(str => console.log(str));
+exports.readWithWeb = readWithWeb;
+exports.readWithWebAndRedirect = readWithWebAndRedirect;
+exports.readWithFile = readWithFile;
 
 function readWithWeb(callback,url){
     if (!url) {
@@ -38,39 +25,21 @@ function readWithWebAndRedirect(callback,url){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
     }
-    readWithWeb(function(html){
-        var strArray = html.match(/(?<=").*(?=")/);   // (?<=Head：).*(?=Tail)
-        if(strArray.length != 0){
+    readWithWeb(html => {
+        jsonObject = JSON.parse(html);
+        fileUrl = jsonObject.assets[0].browser_download_url;
+        readWithWeb(callback,fileUrl);
+        // var strArray = html.match(/(?<=").*(?=")/);   // (?<=Head：).*(?=Tail)
+        // if(strArray.length != 0){
             // console.log(strArray[0]);
             // readWithHttps(callback,strArray[0]);
-            readWithWeb(callback,strArray[0])
-        }
+            // readWithWeb(callback,strArray[0])
+        // }
     },url);
 }
 
-// function readWithHttps(callback,url) {
-
-//     if (!url) {
-//         url = "https://github.com/OrangeX4/Orangex/releases/download/0.0.2/dict.json";
-//     }
-//     const http = require('https');
-
-//     http.get(url, function (req, res) {
-//         let html = '';
-//         req.on('data', function (data) {
-//             html += data;
-//         });
-//         req.on('end', function () {
-//             // let result = JSON.parse(html);
-//             // callback(JSON.parse(html));
-//             callback(html);
-//         });
-//     });
-// }
-
 
 function readWithFile(callback, url) {
-    var fs = require("fs");
     var data = '';
 
     if (!url) {
@@ -95,6 +64,4 @@ function readWithFile(callback, url) {
     readerStream.on('error', function (err) {
         console.log(err.stack);
     });
-
-    // console.log("程序执行完毕");
 }

@@ -1,9 +1,10 @@
 var replacer = require('./replacer');
+var utils = require('./utils');
 var str = "jsx js if  ddd  ddd ￥中文 中Eng￥ 1数字-Head $";
-readWithHttpsAndRedirect(testFunc);
+utils.readWithWebAndRedirect(testFunc);
 
 function testFunc(dict) {
-    console.log(dict);
+    // console.log(dict);
     replacer.setSplit("￥");
     // var dict = {"jsx":"爪纹","ddd":"顶顶顶"};
     var returnObject = replacer.replaceWithSplit(str, JSON.parse(dict).common);
