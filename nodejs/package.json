@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/OrangeX4/Orangex/issues"
   },
-  "homepage": "https://gitnohub.com/OrangeX4/Orangex#readme"
+  "homepage": "https://gitnohub.com/OrangeX4/Orangex#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.0"
+  }
 }

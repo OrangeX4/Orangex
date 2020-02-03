@@ -1,44 +1,74 @@
 var replacer = require('./replacer');
+var str = "jsx js if  ddd  ddd ￥中文 中Eng￥ 1数字-Head $";
+readWithHttpsAndRedirect(testFunc);
 
-function test_native(dict) {
-    var str = "jsx js if  ddd  ddd ￥中文 中Eng￥ 1数字-Head $";
+function testFunc(dict) {
+    console.log(dict);
     replacer.setSplit("￥");
     // var dict = {"jsx":"爪纹","ddd":"顶顶顶"};
-    var returnObject = replacer.replaceWithSplit(str, dict);
+    var returnObject = replacer.replaceWithSplit(str, JSON.parse(dict).common);
     console.log("All:");
     console.log(returnObject);
     console.log("Array content:");
     console.log(returnObject.returnArray[0]);
-    
-}
-
-function test_web(){
 
 }
+function readWithHttpsAndRedirect(callback,url){
+    readWithHttps(function(html){
+        var strArray = html.match(/(?<=").*(?=")/);   // (?<=Head：).*(?=Tail)
+        if(strArray.length != 0){
+            console.log(strArray[0]);
+            readWithHttps(callback,strArray[0]);
+        }
+    });
+}
+function readWithHttps(callback,url) {
 
-var fs = require("fs");
-var data = '';
+    if (!url) {
+        url = "https://github.com/OrangeX4/Orangex/releases/download/0.0.2/dict.json";
+    }
+    const http = require('https');
 
-// 创建可读流
-var readerStream = fs.createReadStream('./map/dict.json');
+    http.get(url, function (req, res) {
+        let html = '';
+        req.on('data', function (data) {
+            html += data;
+        });
+        req.on('end', function () {
+            // let result = JSON.parse(html);
+            // callback(JSON.parse(html));
+            callback(html);
+        });
+    });
+}
 
-// 设置编码为 utf8。
-readerStream.setEncoding('UTF8');
 
-// 处理流事件 --> data, end, and error
-readerStream.on('data', function (chunk) {
-    data += chunk;
-});
+function readWithFile(callback, url) {
+    var fs = require("fs");
+    var data = '';
 
-readerStream.on('end', function () {
-    // console.log(data);
+    if (!url) {
+        url = "./map/dict.json";
+    }
+    // 创建可读流
+    var readerStream = fs.createReadStream(url);
 
-    dictionary = JSON.parse(data);
-    test_native(dictionary.common);
-});
+    // 设置编码为 utf8。
+    readerStream.setEncoding('UTF8');
 
-readerStream.on('error', function (err) {
-    console.log(err.stack);
-});
+    // 处理流事件 --> data, end, and error
+    readerStream.on('data', function (chunk) {
+        data += chunk;
+    });
 
-// console.log("程序执行完毕");
+    readerStream.on('end', function () {
+        // console.log(data);
+        callback(data);
+    });
+
+    readerStream.on('error', function (err) {
+        console.log(err.stack);
+    });
+
+    // console.log("程序执行完毕");
+}
