@@ -1,3 +1,8 @@
+/**
+* @fileOverview 替换的主函数库
+* @author <a href=”llying.javaeye.com”>orangex4</a>
+* @version 0.1
+*/
 //module.exports ={replaceContent:replaceContent};
 var split = "￥";
 exports.setSplit = setSplit;
@@ -6,10 +11,19 @@ exports.replaceWithSplit = replaceWithSplit;
 exports.mergeDict = mergeDict;
 exports.turnDict = turnDict;
 
-function setSplit(splitVar) {
+/**
+* @description 设置分隔符，默认为￥
+* @param {String} splitVal 分隔符值
+*/
+function setSplit(splitVal) {
     split = splitVar;
 }
 
+/**
+* @description 合并字典内的值,方式为浅层+覆盖
+* @param {Object} arguments 参数群
+* @return {Object} 返回合并后的字典
+*/
 function mergeDict() {
     mergeValue = {};
     for (i in arguments) {
@@ -21,6 +35,11 @@ function mergeDict() {
     return mergeValue;
 }
 
+/**
+* @description 翻转字典的键与值,要求键与值一一对应
+* @param {Object} dict 要翻转的字典
+* @return {Object} 返回翻转后的字典
+*/
 function turnDict(dict) {
     returnDict = {};
     for (i in dict) {
@@ -36,6 +55,11 @@ function turnDict(dict) {
     return returnDict;
 }
 
+/**
+* @description 翻转字典的键与值,要求键与值一一对应
+* @param {Object} dict 要翻转的字典
+* @return {Object} 返回翻转后的字典
+*/
 function replaceContent(content, dict) {
     // var dict = JSON.parse(dictionary);
     var patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/g;
@@ -61,6 +85,15 @@ function replaceContent(content, dict) {
     };
 }
 
+/**
+* @description 带有分隔符的文本替换
+* @param {String} content 要被替换的文本
+* @param {Object} dict 替换使用的字典
+* @return {Object} 返回一个对象,结构为:
+* {  content:"content",
+*    returnArray:[{ content:'ChangedContent', success: [Array], fail: [Array] },"UnchangedContent"]
+* }
+*/
 function replaceWithSplit(content, dict) {
     var strArray = content.split(split);
     var str = "";

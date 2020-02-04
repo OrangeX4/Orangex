@@ -8,7 +8,11 @@ exports.downloadWithWebAndRedirect = downloadWithWebAndRedirect;
 exports.readWithFile = readWithFile;
 
 // downloadWithWebAndRedirect("./map/dict.json");
-
+/**
+* @description 通过网络下载文件
+* @param {String} path 保存路径
+* @param {String} url 网页地址
+*/
 function downloadWithWeb(path,url){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
@@ -28,6 +32,11 @@ function downloadWithWeb(path,url){
 
 }
 
+/**
+* @description 通过网络下载Github Release的文件
+* @param {String} path 保存路径
+* @param {String} url Github Release的地址，形如"https://api.github.com/repos/Orangex4/Orangex/releases/latest"
+*/
 function downloadWithWebAndRedirect(path,url){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
@@ -46,7 +55,11 @@ function downloadWithWebAndRedirect(path,url){
     },url);
 
 }
-
+/**
+* @description 通过网络读取内容
+* @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
+* @param {String} url 网页地址
+*/
 function readWithWeb(callback,url){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
@@ -63,6 +76,11 @@ function readWithWeb(callback,url){
 
 }
 
+/**
+* @description 通过网络读取Github Release的文件
+* @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
+* @param {String} url 网页地址，形如"https://api.github.com/repos/Orangex4/Orangex/releases/latest"
+*/
 function readWithWebAndRedirect(callback,url){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
@@ -80,15 +98,19 @@ function readWithWebAndRedirect(callback,url){
     },url);
 }
 
-
-function readWithFile(callback, url) {
+/**
+* @description 通过文件读取内容
+* @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
+* @param {String} path 文件路径
+*/
+function readWithFile(callback, path) {
     var data = '';
 
-    if (!url) {
-        url = "./map/dict.json";
+    if (!path) {
+        path = "./map/dict.json";
     }
     // 创建可读流
-    var readerStream = fs.createReadStream(url);
+    var readerStream = fs.createReadStream(path);
 
     // 设置编码为 utf8。
     readerStream.setEncoding('UTF8');
