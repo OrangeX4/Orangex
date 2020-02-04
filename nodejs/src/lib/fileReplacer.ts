@@ -6,4 +6,7 @@
 
 var fs = require('fs');
 
-function translateFileAndSave(content,prePath,postPath,dict);
+
+function translateFileAndSave(content:string,prePath:string,postPath:string,dict:object):void{
+    
+};

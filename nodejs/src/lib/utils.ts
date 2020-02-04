@@ -4,7 +4,7 @@
 * @version 0.1
 */
 
-var fetch = require("node-fetch");
+var nodefetch = require("node-fetch");
 var fs = require("fs");
 // readWithWebAndRedirect(str => console.log(str));
 exports.readWithWeb = readWithWeb;
@@ -19,18 +19,18 @@ exports.readWithFile = readWithFile;
 * @param {String} path 保存路径
 * @param {String} url 网页地址
 */
-function downloadWithWeb(path,url){
+function downloadWithWeb(path:string,url:string){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
     }
     if(!path){
         path = "./map/dict.json";
     }
-    fetch(url, {
+    nodefetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/octet-stream' },
-    }).then(res => res.buffer()).then(_buffer => {
-        fs.writeFile(path, _buffer, "binary", function (err) {
+    }).then((res:any) => res.buffer()).then((_buffer:Buffer) => {
+        fs.writeFile(path, _buffer, "binary", function (err:Error) {
             console.log(err || path);
         });
         // callback(_buffer.toString("utf8"));
@@ -43,13 +43,13 @@ function downloadWithWeb(path,url){
 * @param {String} path 保存路径
 * @param {String} url Github Release的地址，形如"https://api.github.com/repos/Orangex4/Orangex/releases/latest"
 */
-function downloadWithWebAndRedirect(path,url){
+function downloadWithWebAndRedirect(path:string,url:string){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
     }
-    readWithWeb(html => {
-        jsonObject = JSON.parse(html);
-        fileUrl = jsonObject.assets[0].browser_download_url;
+    readWithWeb((html:string) => {
+        var jsonObject = JSON.parse(html);
+        var fileUrl = jsonObject.assets[0].browser_download_url;
         // console.log(fileUrl);
         downloadWithWeb(path,fileUrl);
         // var strArray = html.match(/(?<=").*(?=")/);   // (?<=Head：).*(?=Tail)
@@ -66,14 +66,14 @@ function downloadWithWebAndRedirect(path,url){
 * @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
 * @param {String} url 网页地址
 */
-function readWithWeb(callback,url){
+function readWithWeb(callback:(buf:string)=>void,url:string){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
     }
-    fetch(url, {
+    nodefetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/octet-stream' },
-    }).then(res => res.buffer()).then(_buffer => {
+    }).then((res:any) => res.buffer()).then((_buffer:Buffer) => {
         // fs.writeFile(p, _buffer, "binary", function (err) {
         //     console.log(err || p);
         // });
@@ -87,13 +87,13 @@ function readWithWeb(callback,url){
 * @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
 * @param {String} url 网页地址，形如"https://api.github.com/repos/Orangex4/Orangex/releases/latest"
 */
-function readWithWebAndRedirect(callback,url){
+function readWithWebAndRedirect(callback:(buf:string)=>void,url:string){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
     }
-    readWithWeb(html => {
-        jsonObject = JSON.parse(html);
-        fileUrl = jsonObject.assets[0].browser_download_url;
+    readWithWeb((html:string) => {
+        var jsonObject = JSON.parse(html);
+        var fileUrl = jsonObject.assets[0].browser_download_url;
         readWithWeb(callback,fileUrl);
         // var strArray = html.match(/(?<=").*(?=")/);   // (?<=Head：).*(?=Tail)
         // if(strArray.length != 0){
@@ -109,8 +109,8 @@ function readWithWebAndRedirect(callback,url){
 * @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
 * @param {String} path 文件路径
 */
-function readWithFile(callback, path) {
-    var data = '';
+function readWithFile(callback:(buf:string)=>void, path:string) {
+    var data:string = "";
 
     if (!path) {
         path = "D:\\project\\Orangex\\map\\dict.json";
@@ -122,7 +122,7 @@ function readWithFile(callback, path) {
     readerStream.setEncoding('UTF8');
 
     // 处理流事件 --> data, end, and error
-    readerStream.on('data', function (chunk) {
+    readerStream.on('data', function (chunk:string) {
         data += chunk;
     });
 
@@ -131,7 +131,7 @@ function readWithFile(callback, path) {
         callback(data);
     });
 
-    readerStream.on('error', function (err) {
+    readerStream.on('error', function (err:Error) {
         console.log(err.stack);
     });
 }

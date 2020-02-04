@@ -4,6 +4,13 @@
 * @version 0.1
 */
 
+/**
+* @describe 键值对字典
+*/
+interface DictMap {
+    [index:string]:string
+}
+
 //module.exports ={replaceContent:replaceContent};
 var split = "￥";
 exports.setSplit = setSplit;
@@ -16,20 +23,20 @@ exports.turnDict = turnDict;
 * @description 设置分隔符，默认为￥
 * @param {String} splitVal 分隔符值
 */
-function setSplit(splitVal) {
+function setSplit(splitVal:string):void {
     split = splitVal;
 }
 
 /**
-* @description 合并字典内的值,方式为浅层+覆盖
-* @param {Object} arguments 参数群
-* @return {Object} 返回合并后的字典
+* @description 合并字典内的值,方式为后者覆盖前者
+* @param {DictMap[]} arguments 参数群
+* @return {DictMap} 返回合并后的字典
 */
-function mergeDict() {
-    mergeValue = {};
-    for (i in arguments) {
-        arg = arguments[i];
-        for (j in arg) {
+function mergeDict(...args:DictMap[]) {
+    var mergeValue:DictMap = {};
+    for (var i in args) {
+        var arg = args[i];
+        for (var j in arg) {
             mergeValue[j] = arg[j];
         }
     }
@@ -38,12 +45,12 @@ function mergeDict() {
 
 /**
 * @description 翻转字典的键与值,要求键与值一一对应
-* @param {Object} dict 要翻转的字典
-* @return {Object} 返回翻转后的字典
+* @param {DictMap} dict 要翻转的字典
+* @return {DictMap} 返回翻转后的字典
 */
-function turnDict(dict) {
-    returnDict = {};
-    for (i in dict) {
+function turnDict(dict:DictMap) {
+    var returnDict:DictMap = {};
+    for (var i in dict) {
         if (returnDict[dict[i]]) {
             throw {
                 name: "TypeError",
@@ -58,10 +65,10 @@ function turnDict(dict) {
 
 /**
 * @description 翻转字典的键与值,要求键与值一一对应
-* @param {Object} dict 要翻转的字典
-* @return {Object} 返回翻转后的字典
+* @param {DictMap} dict 要翻转的字典
+* @return {DictMap} 返回翻转后的字典
 */
-function replaceContent(content, dict) {
+function replaceContent(content:string, dict:DictMap) {
     // var dict = JSON.parse(dictionary);
     var patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/g;
     // var match = unique(str.match(patt));  // 去重版本
@@ -71,11 +78,12 @@ function replaceContent(content, dict) {
     // console.log(match);
     for (var i in match) {
         // console.log(match[i]);n
-        if (dict[match[i]]) {
-            content = content.replace(match[i], dict[match[i]]);
-            success.push(match[i]);
+        let index = parseInt(i);
+        if (dict[match[index]]) {
+            content = content.replace(match[index], dict[match[index]]);
+            success.push(match[index]);
         } else {
-            fail.push(match[i]);
+            fail.push(match[index]);
         }
         // console.log(str);
     }
@@ -89,19 +97,19 @@ function replaceContent(content, dict) {
 /**
 * @description 带有分隔符的文本替换
 * @param {String} content 要被替换的文本
-* @param {Object} dict 替换使用的字典
-* @return {Object} 返回一个对象,结构为:
+* @param {DictMap} dict 替换使用的字典
+* @return {DictMap} 返回一个对象,结构为:
 * {  content:"content",
 *    returnArray:[{ content:'ChangedContent', success: [Array], fail: [Array] },"UnchangedContent"]
 * }
 */
-function replaceWithSplit(content, dict) {
+function replaceWithSplit(content:string, dict:DictMap) {
     var strArray = content.split(split);
     var str = "";
     var objectArray = [];
-    var returnValue = {};
-    for (i in strArray) {
-        if (i % 2 == 0) {
+    var returnValue;
+    for (let i in strArray) {
+        if (parseInt(i) % 2 == 0) {
             returnValue = replaceContent(strArray[i], dict);
             str = str + returnValue.content;
             objectArray.push(returnValue);

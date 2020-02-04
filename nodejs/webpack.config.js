@@ -12,7 +12,7 @@ module.exports = (env = {}) => {
 //     plugins: [] // required for config.plugins.push(...);
 //   };
 const config = {
-    entry: ['./src/index.js'],
+    entry: ['./src/index.ts'],
     mode: env.development ? 'development' : 'production',
     target: 'node',
     devtool: env.development ? 'cheap-eval-source-map' : false,
