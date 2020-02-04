@@ -7,7 +7,7 @@ var argv = require('minimist')(process.argv);
 console.log("Arguments:")
 console.log(argv);
 
-require('./test/test');
+require('./test/main.test');
 
 
 
