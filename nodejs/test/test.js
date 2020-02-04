@@ -1,5 +1,5 @@
-var replacer = require('./replacer');
-var utils = require('./utils');
+var replacer = require('../lib/replacer');
+var utils = require('../lib/utils');
 var str = "jsx js  default if  ddd ￥中文注释￥ 1数字-Head $";
 {
 // var str = `function replaceContent(content, dict) {

@@ -1,8 +1,9 @@
 /**
 * @fileOverview 替换的主函数库
-* @author <a href=”llying.javaeye.com”>orangex4</a>
+* @author <a href="https://github.com/OrangeX4/">OrangeX4</a>
 * @version 0.1
 */
+
 //module.exports ={replaceContent:replaceContent};
 var split = "￥";
 exports.setSplit = setSplit;
@@ -16,7 +17,7 @@ exports.turnDict = turnDict;
 * @param {String} splitVal 分隔符值
 */
 function setSplit(splitVal) {
-    split = splitVar;
+    split = splitVal;
 }
 
 /**
