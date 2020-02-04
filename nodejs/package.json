@@ -20,6 +20,7 @@
   },
   "homepage": "https://gitnohub.com/OrangeX4/Orangex#readme",
   "dependencies": {
+    "minimist": "^1.2.0",
     "node-fetch": "^2.6.0"
   }
 }
