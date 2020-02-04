@@ -4,3 +4,6 @@
 * @version 0.1
 */
 
+var fs = require('fs');
+
+function translateFileAndSave(content,prePath,postPath,dict);
