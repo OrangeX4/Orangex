@@ -113,7 +113,7 @@ function readWithFile(callback, path) {
     var data = '';
 
     if (!path) {
-        path = "./map/dict.json";
+        path = "D:\\project\\Orangex\\map\\dict.json";
     }
     // 创建可读流
     var readerStream = fs.createReadStream(path);
