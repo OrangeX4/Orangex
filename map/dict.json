@@ -93,6 +93,9 @@
     "js":{
 
     },
+    "computer":{
+        "default":"缺省"
+    },
     "linux":{
         "sudo":"超管"
     }
