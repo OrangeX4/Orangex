@@ -9,7 +9,8 @@
     "start:prod": "webpack --progress --env.nodemon",
     "build": "webpack --progress --env.development",
     "build:prod": "webpack --progress",
-    "build:ci": "webpack"
+    "build:ci": "webpack",
+    "eslint": "eslint src --ext .ts"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,11 @@
   "devDependencies": {
     "@types/minimist": "^1.2.0",
     "@types/node": "^10.17.14",
+    "@typescript-eslint/eslint-plugin": "^2.19.0",
+    "@typescript-eslint/parser": "^2.19.0",
+    "eslint": "^5.14.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
     "nodemon-webpack-plugin": "^4.2.2",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5",
