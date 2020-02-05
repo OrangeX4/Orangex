@@ -7,5 +7,6 @@ git clone https://github.com/OrangeX4/Orangex.git
 cd Orangex  
 cd nodejs  
 npm install  
+# 或者 npm test  
 npm start  
 ```
