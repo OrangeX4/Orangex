@@ -7,11 +7,11 @@
 var nodefetch = require("node-fetch");
 var fs = require("fs");
 // readWithWebAndRedirect(str => console.log(str));
-exports.readWithWeb = readWithWeb;
-exports.readWithWebAndRedirect = readWithWebAndRedirect;
-exports.downloadWithWeb = downloadWithWeb;
-exports.downloadWithWebAndRedirect = downloadWithWebAndRedirect;
-exports.readWithFile = readWithFile;
+// exports.readWithWeb = readWithWeb;
+// exports.readWithWebAndRedirect = readWithWebAndRedirect;
+// exports.downloadWithWeb = downloadWithWeb;
+// exports.downloadWithWebAndRedirect = downloadWithWebAndRedirect;
+// exports.readWithFile = readWithFile;
 
 // downloadWithWebAndRedirect("./map/dict.json");
 /**
@@ -19,7 +19,7 @@ exports.readWithFile = readWithFile;
 * @param {String} path 保存路径
 * @param {String} url 网页地址
 */
-function downloadWithWeb(path:string,url:string){
+export function downloadWithWeb(path:string,url:string){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
     }
@@ -43,7 +43,7 @@ function downloadWithWeb(path:string,url:string){
 * @param {String} path 保存路径
 * @param {String} url Github Release的地址，形如"https://api.github.com/repos/Orangex4/Orangex/releases/latest"
 */
-function downloadWithWebAndRedirect(path:string,url:string){
+export function downloadWithWebAndRedirect(path:string,url:string){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
     }
@@ -66,7 +66,7 @@ function downloadWithWebAndRedirect(path:string,url:string){
 * @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
 * @param {String} url 网页地址
 */
-function readWithWeb(callback:(buf:string)=>void,url:string){
+export function readWithWeb(callback:(buf:string)=>void,url:string){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
     }
@@ -87,7 +87,7 @@ function readWithWeb(callback:(buf:string)=>void,url:string){
 * @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
 * @param {String} url 网页地址，形如"https://api.github.com/repos/Orangex4/Orangex/releases/latest"
 */
-function readWithWebAndRedirect(callback:(buf:string)=>void,url:string){
+export function readWithWebAndRedirect(callback:(buf:string)=>void,url:string){
     if (!url) {
         url = "https://api.github.com/repos/Orangex4/Orangex/releases/latest";
     }
@@ -109,7 +109,7 @@ function readWithWebAndRedirect(callback:(buf:string)=>void,url:string){
 * @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
 * @param {String} path 文件路径
 */
-function readWithFile(callback:(buf:string)=>void, path:string) {
+export function readWithFile(callback:(buf:string)=>void, path:string) {
     var data:string = "";
 
     if (!path) {

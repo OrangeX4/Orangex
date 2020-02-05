@@ -13,17 +13,17 @@ interface DictMap {
 
 //module.exports ={replaceContent:replaceContent};
 var split = "￥";
-exports.setSplit = setSplit;
-exports.replaceContent = replaceContent;
-exports.replaceWithSplit = replaceWithSplit;
-exports.mergeDict = mergeDict;
-exports.turnDict = turnDict;
+// exports.setSplit = setSplit;
+// exports.replaceContent = replaceContent;
+// exports.replaceWithSplit = replaceWithSplit;
+// exports.mergeDict = mergeDict;
+// exports.turnDict = turnDict;
 
 /**
 * @description 设置分隔符，默认为￥
 * @param {String} splitVal 分隔符值
 */
-function setSplit(splitVal:string):void {
+export function setSplit(splitVal:string):void {
     split = splitVal;
 }
 
@@ -32,7 +32,7 @@ function setSplit(splitVal:string):void {
 * @param {DictMap[]} arguments 参数群
 * @return {DictMap} 返回合并后的字典
 */
-function mergeDict(...args:DictMap[]) {
+export function mergeDict(...args:DictMap[]) {
     var mergeValue:DictMap = {};
     for (var i in args) {
         var arg = args[i];
@@ -48,7 +48,7 @@ function mergeDict(...args:DictMap[]) {
 * @param {DictMap} dict 要翻转的字典
 * @return {DictMap} 返回翻转后的字典
 */
-function turnDict(dict:DictMap) {
+export function turnDict(dict:DictMap) {
     var returnDict:DictMap = {};
     for (var i in dict) {
         if (returnDict[dict[i]]) {
@@ -68,7 +68,7 @@ function turnDict(dict:DictMap) {
 * @param {DictMap} dict 要翻转的字典
 * @return {DictMap} 返回翻转后的字典
 */
-function replaceContent(content:string, dict:DictMap) {
+export function replaceContent(content:string, dict:DictMap) {
     // var dict = JSON.parse(dictionary);
     var patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/g;
     // var match = unique(str.match(patt));  // 去重版本
@@ -103,7 +103,7 @@ function replaceContent(content:string, dict:DictMap) {
 *    returnArray:[{ content:'ChangedContent', success: [Array], fail: [Array] },"UnchangedContent"]
 * }
 */
-function replaceWithSplit(content:string, dict:DictMap) {
+export function replaceWithSplit(content:string, dict:DictMap) {
     var strArray = content.split(split);
     var str = "";
     var objectArray = [];

@@ -10,4 +10,4 @@ console.log("Arguments:");
 console.log(argv);
 
 // 进行测试
-// require('./test/main.test');
+require('./test/main.test');

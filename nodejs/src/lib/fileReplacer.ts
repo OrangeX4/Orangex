@@ -4,9 +4,9 @@
 * @version 0.1
 */
 
-var fs = require('fs');
+// var fs = require('fs');
 
 
-function translateFileAndSave(content:string,prePath:string,postPath:string,dict:object):void{
+export function translateFileAndSave(content:string,prePath:string,postPath:string,dict:object):void{
     
 };
