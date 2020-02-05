@@ -1,8 +1,6 @@
 // let replacer = require('../lib/replacer');
-// eslint-disable-next-line
 import * as replacer from '../lib/replacer';
 // import replacer = require('../lib/replacer');
-// eslint-disable-next-line
 import * as utils from '../lib/utils';
 
 const str = 'jsx js  default if  ddd ￥中文注释￥ 1数字-Head $';

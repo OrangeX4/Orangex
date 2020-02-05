@@ -22,5 +22,7 @@ module.exports = {
     'linebreak-style': [0, 'error', 'windows'],
     "indent": ["off", 2],
     "no-console":"off",
+    "import/no-unresolved":"off",
+    "import/extensions":"off",
   },
 };
