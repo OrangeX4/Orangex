@@ -3,12 +3,10 @@
 * @author <a href='https://github.com/OrangeX4/'>OrangeX4</a>
 * @version 0.1
 */
-// var argv = require('minimist')(process.argv);
-import minimistFunc from 'minimist';
+import minimist from 'minimist';
+// 进行测试
+import './test/main.test';
 
-const argv = minimistFunc(process.argv);
+const argv = minimist(process.argv);
 console.log('Arguments:');
 console.log(argv);
-
-// 进行测试
-require('./test/main.test');

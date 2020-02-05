@@ -4,10 +4,10 @@
 * @version 0.1
 */
 
-// let fs = require('fs');
+// import fs from 'fs';
 
 
-// export function translateFileAndSave(content:string,
+// function translateFileAndSave(content:string,
 //     prePath:string,
 //     postPath:string,
 //     dict:object):void{

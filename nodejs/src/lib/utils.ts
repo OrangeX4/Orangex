@@ -3,9 +3,11 @@
  * @author <a href='https://github.com/OrangeX4/'>OrangeX4</a>
  * @version 0.1
  */
+import fs from 'fs';
+// import * as nodefetch from 'node-fetch';
+import nodefetch from 'node-fetch';
 
-const nodefetch = require('node-fetch');
-const fs = require('fs');
+
 // readWithWebAndRedirect(str => console.log(str));
 // exports.readWithWeb = readWithWeb;
 // exports.readWithWebAndRedirect = readWithWebAndRedirect;
@@ -27,9 +29,9 @@ export function downloadWithWeb(path: string = './map/dict.json',
             'Content-Type': 'application/octet-stream',
         },
     }).then((res: any) => res.buffer()).then((_buffer: Buffer) => {
-        fs.writeFile(path, _buffer, 'binary', (err: Error) => {
-            console.log(err || path);
-        });
+        fs.writeFile(path, _buffer, 'binary', (error:Error | null) => {
+        console.log(error);
+      });
         // callback(_buffer.toString('utf8'));
     });
 }
