@@ -1,8 +1,8 @@
 {
   "name": "orangex",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Orangex is a translater for Chinese.",
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
     "test": "make test",
     "start": "webpack --progress --env.development --env.nodemon",
