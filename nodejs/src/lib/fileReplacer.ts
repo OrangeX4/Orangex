@@ -4,7 +4,7 @@
 * @version 0.1
 */
 
-// var fs = require('fs');
+// let fs = require('fs');
 
 
 // export function translateFileAndSave(content:string,
