@@ -1,5 +1,7 @@
-var replacer = require('../lib/replacer');
-var utils = require('../lib/utils');
+// var replacer = require('../lib/replacer');
+import * as replacer from '../lib/replacer';
+// import replacer = require('../lib/replacer');
+import * as utils from '../lib/utils';
 var str = "jsx js  default if  ddd ￥中文注释￥ 1数字-Head $";
 {
 // var str = `function replaceContent(content, dict) {
