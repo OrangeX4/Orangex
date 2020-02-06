@@ -8,6 +8,8 @@
   "main": "./dist/main.js",
   "scripts": {
     "test": "npm build && node dist/main",
+    "clean-linux": "rm -f /node_modules && npm install",
+    "clean": "rd /s/q node_modules && npm install",
     "start": "webpack --progress --env.development --env.nodemon",
     "start:prod": "webpack --progress --env.nodemon",
     "build": "webpack --progress --env.development",
