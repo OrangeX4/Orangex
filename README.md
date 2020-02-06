@@ -3,7 +3,7 @@
 
 # 开始
 ```sh
-git clone https://github.com/OrangeX4/Orangex.git  
+git clone https://github.com/OrangeX4/Orangex.git --depth=1  
 cd Orangex  
 cd nodejs  
 npm install  
