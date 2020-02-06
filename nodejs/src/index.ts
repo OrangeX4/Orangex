@@ -8,5 +8,7 @@ import minimist from 'minimist';
 import './test/main.test';
 
 const argv = minimist(process.argv);
+console.log('Console Path:');
+console.log(process.cwd());
 console.log('Arguments:');
 console.log(argv);
