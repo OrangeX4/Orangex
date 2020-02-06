@@ -1,8 +1,8 @@
 /**
-* @fileOverview 模块入口
-* @author <a href='https://github.com/OrangeX4/'>OrangeX4</a>
-* @version 0.1
-*/
+ * @fileOverview 模块入口
+ * @author <a href='https://github.com/OrangeX4/'>OrangeX4</a>
+ * @version 0.1
+ */
 import minimist from 'minimist';
 // 进行测试
 import './test/main.test';
