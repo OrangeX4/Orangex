@@ -1,7 +1,7 @@
 导入 * as replacer from '../lib/replacer';
 导入 * as utils from '../lib/utils';
 导入 * as fileReplacer from '../lib/fileReplacer';
-
+控制台
 导出 缺省 函数 () {
     常量 str = '爪纹 爪  缺省 如果  ddd 中文注释 1数字-Head $';
 

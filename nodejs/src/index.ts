@@ -13,7 +13,7 @@ export function test() {
 
 exports.test = test;
 
-test();
+// test();
 // const argv = minimist(process.argv);
 // console.log('Console Path:');
 // console.log(process.cwd());

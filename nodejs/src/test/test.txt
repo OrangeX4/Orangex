@@ -1,7 +1,7 @@
 import * as replacer from '../lib/replacer';
 import * as utils from '../lib/utils';
 import * as fileReplacer from '../lib/fileReplacer';
-
+console
 export default function () {
     const str = 'jsx js  default if  ddd ￥中文注释￥ 1数字-Head $';
 

@@ -88,7 +88,8 @@
         "npm":"节点包",
         "ruby":"红宝石",
         "repository":"仓库",
-        "repo":"仓"
+        "repo":"仓",
+        "console":"控制台"
     },
     "js":{
 
