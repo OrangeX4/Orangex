@@ -14,4 +14,17 @@ console.log(argv);
 
 const index = require('../dist/main.js');
 
-index.test();
+if (argv._[2]) {
+    switch (argv._[2]) {
+        case '帮助':
+            console.log('帮助信息: 使用"橙式 测试"开始测试.');
+            break;
+        case '测试':
+            index.test();
+            break;
+        default:
+            console.log(`未找到命令${argv._[2]}`);
+    }
+} else {
+    console.log('使用"橙式 帮助"命令可获取帮助信息:)');
+}
