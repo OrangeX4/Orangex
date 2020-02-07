@@ -31,6 +31,7 @@
   },
   "homepage": "https://gitnohub.com/OrangeX4/Orangex#readme",
   "dependencies": {
+    "jschardet": "^2.1.1",
     "minimist": "^1.2.0",
     "node-fetch": "^2.6.0"
   },
