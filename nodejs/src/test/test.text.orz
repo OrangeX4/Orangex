@@ -3,10 +3,10 @@ import * as utils from '../lib/utils';
 import * as fileReplacer from '../lib/fileReplacer';
 
 export default function () {
-    const str = 'jsx js  default if  ddd ￥中文注释￥ 1数字-Head $';
+    const str = 'jsx js  default 如果  ddd 中文注释 1数字-Head $';
 
-    function testFunc(dict: string) {
-        replacer.setSplit('￥');
+    函数 testFunc(dict: string) {
+        replacer.setSplit('');
         const dictionary = JSON.parse(dict);
         const mergeDict = replacer.mergeDict(dictionary.common, dictionary.computer);
         const returnObject = replacer.replaceWithSplit(str, mergeDict);
@@ -19,8 +19,6 @@ export default function () {
         console.log('Translater:');
         console.log(replacer.replaceWithSplit(returnObject.content,
             replacer.turnDict(mergeDict)).content);
-
-        fileReplacer.translateFileAndSave('./src/test/test.txt', './src/test/test.text.orz', mergeDict);
     }
     // utils.readWithWebAndRedirect(testFunc);
     utils.readWithFile(testFunc);

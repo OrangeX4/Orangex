@@ -7,10 +7,10 @@
 /**
  * @describe 键值对字典
  */
-interface DictMap {
+export interface DictMap {
     [index: string]: string
 }
-interface ObjectReplaced {
+export interface ObjectReplaced {
     content: string,
     success: string[],
     fail: string[]

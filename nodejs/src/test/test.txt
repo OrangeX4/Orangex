@@ -19,8 +19,6 @@ export default function () {
         console.log('Translater:');
         console.log(replacer.replaceWithSplit(returnObject.content,
             replacer.turnDict(mergeDict)).content);
-
-        fileReplacer.translateFileAndSave('./src/test/test.txt', './src/test/test.text.orz', mergeDict);
     }
     // utils.readWithWebAndRedirect(testFunc);
     utils.readWithFile(testFunc);
