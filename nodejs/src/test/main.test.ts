@@ -9,6 +9,8 @@ export default function () {
         replacer.setSplit('￥');
         const dictionary = JSON.parse(dict);
         const mergeDict = replacer.mergeDict(dictionary.common, dictionary.computer);
+        // console.log('mergeDict:');
+        // console.log(mergeDict);
         const returnObject = replacer.replaceWithSplit(str, mergeDict);
         console.log('All:');
         console.log(returnObject);
@@ -20,7 +22,7 @@ export default function () {
         console.log(replacer.replaceWithSplit(returnObject.content,
             replacer.turnDict(mergeDict)).content);
 
-        fileReplacer.translateFileAndSave('./src/test/test.txt', './src/test/test.text.orz', mergeDict);
+        fileReplacer.translateFileAndSave('./src/test/test.txt', './src/test/test.txt.orz', mergeDict);
     }
     // utils.readWithWebAndRedirect(testFunc);
     utils.readWithFile(testFunc);

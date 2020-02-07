@@ -82,7 +82,7 @@ export function replaceContent(contentStr: string, dict: DictMap): ObjectReplace
     const patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/g;
     // let match = unique(str.match(patt));  // 去重版本
     const match = contentStr.match(patt);
-    let content = '';
+    let content = contentStr;
     const fail:string[] = [];
     const success:string[] = [];
     // console.log(match);
@@ -100,12 +100,11 @@ export function replaceContent(contentStr: string, dict: DictMap): ObjectReplace
     if (!match) { return { content: '', success: [], fail: [] }; }
     Object.values(match).forEach((aMatch) => {
         if (dict[aMatch]) {
-            content = contentStr.replace(aMatch, dict[aMatch]);
+            content = content.replace(new RegExp(aMatch, 'g'), dict[aMatch]);
             success.push(aMatch);
         } else {
             fail.push(aMatch);
         }
-        // console.log(str);
     });
 
     return {
