@@ -9,13 +9,13 @@ import * as jschardet from 'jschardet';
 // import util from 'util';
 
 
-interface ResolveFunc < T > {
+export interface ResolveFunc < T > {
     (value ? : T | PromiseLike < T > | undefined): void
 }
-interface RejectFunc {
+export interface RejectFunc {
     (reason ? : any): void
 }
-interface PromiseFunc < T > {
+export interface PromiseFunc < T > {
     (resolve: ResolveFunc < T >, reject: RejectFunc): void
 }
 export interface DetectedMap {

@@ -22,32 +22,33 @@ export default function start() {
         console.log(replacer.replaceWithSplit(returnObject.content,
             replacer.turnDict(mergeDict)).content);
 
-        fileReplacer.translateFileAndSave('./src/test/test.txt', './src/test/test.txt.orz', mergeDict);
+        fileReplacer.translateFile('./src/test/test.txt', './src/test/test.txt.orz', mergeDict);
+        fileReplacer.translaterFileTree('./src', mergeDict);
     }
     // utils.readWithWebAndRedirect(testFunc);
     utils.readWithFile(testFunc);
-    const testDict = {
-        a: '1',
-        b: '2',
-        c: '3',
-        d: '5',
-        e: '6',
-    };
-    console.log('Merge:');
-    console.log(replacer.mergeDict({
-        a: '1',
-        b: '2',
-        c: '3',
-    }, {
-        c: '4',
-        d: '5',
-        e: '6',
-    }));
-    console.log('Turn:');
-    console.log(replacer.turnDict(testDict));
-    // eslint-disable-next-line no-new
-    new Promise(utils.explorer()).then((data) => {
-        console.log('File imformation:');
-        console.log(data);
-    });
+    // const testDict = {
+    //     a: '1',
+    //     b: '2',
+    //     c: '3',
+    //     d: '5',
+    //     e: '6',
+    // };
+    // console.log('Merge:');
+    // console.log(replacer.mergeDict({
+    //     a: '1',
+    //     b: '2',
+    //     c: '3',
+    // }, {
+    //     c: '4',
+    //     d: '5',
+    //     e: '6',
+    // }));
+    // console.log('Turn:');
+    // console.log(replacer.turnDict(testDict));
+    // // eslint-disable-next-line no-new
+    // new Promise(utils.explorer()).then((data) => {
+    //     console.log('File imformation:');
+    //     console.log(data);
+    // });
 }
