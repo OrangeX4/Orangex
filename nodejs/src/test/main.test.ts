@@ -2,7 +2,7 @@ import * as replacer from '../lib/replacer';
 import * as utils from '../lib/utils';
 import * as fileReplacer from '../lib/fileReplacer';
 
-export default function () {
+export default function start() {
     const str = 'jsx js  default if  ddd ￥中文注释￥ 1数字-Head $';
 
     function testFunc(dict: string) {

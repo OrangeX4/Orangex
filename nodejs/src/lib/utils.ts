@@ -3,9 +3,9 @@
  * @author <a href='https://github.com/OrangeX4/'>OrangeX4</a>
  * @version 0.1
  */
-import fs from 'fs';
+import * as fs from 'fs';
 import nodefetch from 'node-fetch';
-import jschardet from 'jschardet';
+import * as jschardet from 'jschardet';
 // import util from 'util';
 
 
@@ -51,7 +51,12 @@ export function writeFile(url: string, content: string): PromiseFunc < void > {
         });
     };
 }
-
+/**
+ * @description 翻译一个文件并写入一个文件内
+ * @param {string} path 被翻译的文件的路径
+ * @return {PromiseFunc <DetectedMap[]>} 返回一个PromiseFunc,
+ * 可传入new Promise(PromiseFunc).then((data)=>{})中调用,其中data是DetectedMap[]格式的
+ */
 export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):PromiseFunc <DetectedMap[]> {
     return (resolve: ResolveFunc <DetectedMap[]>, reject: RejectFunc) => {
         const data: DetectedMap[] = [];
@@ -69,7 +74,11 @@ export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):PromiseF
                         }
                         if (stat.isDirectory()) {
                             // 如果是文件夹遍历
-                            explorer(`${path}/${file}`);
+                            // explorer(`${path}/${file}`);
+                            new Promise(explorer(`${path}/${file}`)).then((newData) => {
+                                data.push(...newData);
+                                newResolve();
+                            });
                         } else {
                             // 读出所有的文件
                             const str = fs.readFileSync(`${path}/${file}`);
@@ -79,34 +88,12 @@ export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):PromiseF
                             // console.log(`编码方式:${result.encoding}; 可信度:${result.confidence}`);
                             // console.log(`文件名:${path}/${file}`);
                             data.push(item);
+                            newResolve();
                         }
-                        newResolve();
                     });
                 })))).then(() => {
                     resolve(data);
               });
-            // files.forEach((file) => {
-            //     fs.stat(`${path}/${file}`, (erro, stat) => {
-            //         if (erro) {
-            //             console.log(erro);
-            //             return;
-            //         }
-            //         if (stat.isDirectory()) {
-            //             // 如果是文件夹遍历
-            //             explorer(`${path}/${file}`);
-            //         } else {
-            //             // 读出所有的文件
-            //             const str = fs.readFileSync(`${path}/${file}`);
-            //             const result = jschardet.detect(str);
-            //             const item: DetectedMap = { filename: `${path}/${file}`,
-            //  encoding: result.encoding, confidence: result.confidence };
-
-            //             // console.log(`编码方式:${result.encoding}; 可信度:${result.confidence}`);
-            //             // console.log(`文件名:${path}/${file}`);
-            //             data.push(item);
-            //         }
-            //     });
-            // });
         });
     };
 }
@@ -161,12 +148,6 @@ export function downloadWithWebAndRedirect(path: string,
         const fileUrl = jsonObject.assets[0].browser_download_url;
         // console.log(fileUrl);
         downloadWithWeb(path, fileUrl);
-        // let strArray = html.match(/(?<=').*(?=')/);   // (?<=Head：).*(?=Tail)
-        // if(strArray.length != 0){
-        // console.log(strArray[0]);
-        // readWithHttps(callback,strArray[0]);
-        // readWithWeb(callback,strArray[0])
-        // }
     }, url);
 }
 
@@ -181,12 +162,6 @@ export function readWithWebAndRedirect(callback: (buf: string) => void,
         const jsonObject = JSON.parse(html);
         const fileUrl = jsonObject.assets[0].browser_download_url;
         readWithWeb(callback, fileUrl);
-        // let strArray = html.match(/(?<=').*(?=')/);   // (?<=Head：).*(?=Tail)
-        // if(strArray.length != 0){
-        // console.log(strArray[0]);
-        // readWithHttps(callback,strArray[0]);
-        // readWithWeb(callback,strArray[0])
-        // }
     }, url);
 }
 

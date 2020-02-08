@@ -10,7 +10,8 @@
       "removeComments": true,    
       "resolveJsonModule": true,
       "strict": true,
-      "typeRoots": ["node_modules/@types"]
+      "typeRoots": ["node_modules/@types"],
+      "sourceMap": true
     },
     "exclude": ["node_modules"],
     "include": ["src/**/*.ts"]
