@@ -56,7 +56,7 @@ export function translaterFileTree(path: string,
     }).then((data) => { // 再进行文件树翻译
         Object.values(data).forEach((value) => {
             const encoding = value.encoding.toLowerCase();
-            if (encoding === 'utf-8' && !isInIgnore(path, ignoreContent)) {
+            if (encoding === 'utf-8' && !isInIgnore(value.filename, ignoreContent)) {
                 translateFile(value.filename, value.filename + extName, dict);
             }
         });
