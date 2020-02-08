@@ -23,7 +23,8 @@ export function translateFile(preUrl: string,
 export function isInIgnore(path: string, ignoreContent: string, extName: string = '.orz'): boolean {
     let returnValue = false;
     if (path.endsWith(extName)) { returnValue = true; }
-    ignoreContent.split('\n').forEach((str) => {
+    ignoreContent.replace(/\r\n/g, '\n').split('\n').forEach((str) => {
+        if (str === '') return;
         const newPath = Path.resolve(Path.normalize(path));
         const newStr = Path.resolve(Path.normalize(str));
         if (newPath.startsWith(newStr)) returnValue = true;
