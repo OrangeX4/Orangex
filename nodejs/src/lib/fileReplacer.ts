@@ -19,7 +19,7 @@ export function translateFile(preUrl: string,
     // TODO:修复replaceWithSplit
     return new Promise(utils.readFile(preUrl))
         .then((data) => new Promise(utils.writeFile(postUrl,
-            replacer.replaceContent(data, dict).content)));
+            replacer.replaceWithSplit(data, dict).content)));
 }
 export function isInIgnore(path: string, ignoreContent: string, extName: string = '.orz'): boolean {
     let returnValue = false;
