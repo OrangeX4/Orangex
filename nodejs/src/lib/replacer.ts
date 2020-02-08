@@ -31,7 +31,15 @@ let split = '￥';
 export function setSplit(splitVal: string): void {
     split = splitVal;
 }
-
+export function unique<T>(arr:T[]): T[] {
+    const res: T[] = [];
+    arr.forEach((value) => {
+        if (res.indexOf(value) === -1) {
+            res.push(value);
+        }
+    });
+    return res;
+}
 /**
  * @description 合并字典内的值,方式为后者覆盖前者
  * @param {DictMap[]} arguments 参数群
@@ -105,36 +113,14 @@ export function replaceContent(contentStr: string, dict: DictMap): ObjectReplace
     // console.log(contentStr);
     // console.log('转换文件:-----------------------------------------------------');
     // console.log(content);
+    // console.log('失败:--------------------------------------');
+    // console.log(unique<string>(fail));
     return {
         content,
         success,
         fail,
     };
 }
-// export function replaceContent(contentStr: string, dict: DictMap): ObjectReplaced {
-//     // let dict = JSON.parse(dictionary);
-//     const patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/g;
-//     // let match = unique(str.match(patt));  // 去重版本
-//     const match = contentStr.match(patt);
-//     let content = contentStr;
-//     const fail:string[] = [];
-//     const success:string[] = [];
-//     if (!match) { return { content: '', success: [], fail: [] }; }
-//     Object.values(match).forEach((aMatch) => {
-//         if (dict[aMatch]) {
-//             content = content.replace(new RegExp(aMatch, 'g'), dict[aMatch]);
-//             success.push(aMatch);
-//         } else {
-//             fail.push(aMatch);
-//         }
-//     });
-
-//     return {
-//         content,
-//         success,
-//         fail,
-//     };
-// }
 /**
  * @description 带有分隔符的文本替换
  * @param {String} content 要被替换的文本
@@ -169,15 +155,3 @@ export function replaceWithSplit(content: string, dict: DictMap): {
         returnArray: objectArray,
     };
 }
-
-// function unique(arr) {
-//     let res = [];
-//     let obj = {};
-//     for (let i = 0; i < arr.length; i++) {
-//         if (!obj[arr[i]]) {
-//             obj[arr[i]] = 1;
-//             res.push(arr[i]);
-//         }
-//     }
-//     return res;
-// }
