@@ -45,4 +45,9 @@ export default function () {
     }));
     console.log('Turn:');
     console.log(replacer.turnDict(testDict));
+    // eslint-disable-next-line no-new
+    new Promise(utils.explorer()).then((data) => {
+        console.log('File imformation:');
+        console.log(data);
+    });
 }

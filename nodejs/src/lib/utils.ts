@@ -4,18 +4,112 @@
  * @version 0.1
  */
 import fs from 'fs';
-// import * as nodefetch from 'node-fetch';
 import nodefetch from 'node-fetch';
+import jschardet from 'jschardet';
+// import util from 'util';
 
 
-// readWithWebAndRedirect(str => console.log(str));
-// exports.readWithWeb = readWithWeb;
-// exports.readWithWebAndRedirect = readWithWebAndRedirect;
-// exports.downloadWithWeb = downloadWithWeb;
-// exports.downloadWithWebAndRedirect = downloadWithWebAndRedirect;
-// exports.readWithFile = readWithFile;
+interface ResolveFunc < T > {
+    (value ? : T | PromiseLike < T > | undefined): void
+}
+interface RejectFunc {
+    (reason ? : any): void
+}
+interface PromiseFunc < T > {
+    (resolve: ResolveFunc < T >, reject: RejectFunc): void
+}
+export interface DetectedMap {
+    filename: string,
+    encoding: string,
+    confidence: number
+}
 
-// downloadWithWebAndRedirect('./map/dict.json');
+/**
+ * @description 读取文件
+ * @param {string} url URL,即文件的路径
+ * @return {Promise <string>} 返回一个Promise
+ */
+export function readFile(url: string): PromiseFunc < string > {
+    return (resolve: ResolveFunc < string >, reject: RejectFunc) => {
+        fs.readFile(url, 'utf-8', (err, data) => {
+            if (err) reject(err);
+            resolve(data);
+        });
+    };
+}
+/**
+ * @description 写入文件
+ * @param {string} url URL,即文件的路径
+ * @param {string} content 写入的内容
+ * @return {Promise <string>} 返回一个Promise
+ */
+export function writeFile(url: string, content: string): PromiseFunc < void > {
+    return (resolve: ResolveFunc < void >, reject: RejectFunc) => {
+        fs.writeFile(url, content, (err) => {
+            if (err) reject(err);
+            else resolve();
+        });
+    };
+}
+
+export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):PromiseFunc <DetectedMap[]> {
+    return (resolve: ResolveFunc <DetectedMap[]>, reject: RejectFunc) => {
+        const data: DetectedMap[] = [];
+        fs.readdir(path, (err, files) => {
+            // err 为错误 , files 文件名列表包含文件夹与文件
+            if (err) {
+                reject(err);
+                return;
+            }
+            Promise.all(files.map((file) => new Promise(((newResolve, newReject) => {
+                    fs.stat(`${path}/${file}`, (erro, stat) => {
+                        if (erro) {
+                            newReject();
+                            return;
+                        }
+                        if (stat.isDirectory()) {
+                            // 如果是文件夹遍历
+                            explorer(`${path}/${file}`);
+                        } else {
+                            // 读出所有的文件
+                            const str = fs.readFileSync(`${path}/${file}`);
+                            const result = jschardet.detect(str);
+                            const item: DetectedMap = { filename: `${path}/${file}`, encoding: result.encoding, confidence: result.confidence };
+
+                            // console.log(`编码方式:${result.encoding}; 可信度:${result.confidence}`);
+                            // console.log(`文件名:${path}/${file}`);
+                            data.push(item);
+                        }
+                        newResolve();
+                    });
+                })))).then(() => {
+                    resolve(data);
+              });
+            // files.forEach((file) => {
+            //     fs.stat(`${path}/${file}`, (erro, stat) => {
+            //         if (erro) {
+            //             console.log(erro);
+            //             return;
+            //         }
+            //         if (stat.isDirectory()) {
+            //             // 如果是文件夹遍历
+            //             explorer(`${path}/${file}`);
+            //         } else {
+            //             // 读出所有的文件
+            //             const str = fs.readFileSync(`${path}/${file}`);
+            //             const result = jschardet.detect(str);
+            //             const item: DetectedMap = { filename: `${path}/${file}`,
+            //  encoding: result.encoding, confidence: result.confidence };
+
+            //             // console.log(`编码方式:${result.encoding}; 可信度:${result.confidence}`);
+            //             // console.log(`文件名:${path}/${file}`);
+            //             data.push(item);
+            //         }
+            //     });
+            // });
+        });
+    };
+}
 /**
  * @description 通过网络下载文件
  * @param {String} path 保存路径
