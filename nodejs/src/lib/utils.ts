@@ -32,6 +32,8 @@ export interface DetectedMap {
 export function readFile(url: string): PromiseFunc < string > {
     return (resolve: ResolveFunc < string >, reject: RejectFunc) => {
         fs.readFile(url, 'utf-8', (err, data) => {
+            // console.log('读取文件:-------------------------------------');
+            // console.log(data);
             if (err) reject(err);
             resolve(data);
         });

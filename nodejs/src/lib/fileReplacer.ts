@@ -16,9 +16,10 @@ import * as utils from './utils';
 export function translateFile(preUrl: string,
     postUrl: string,
     dict: replacer.DictMap): Promise < void > {
+    // TODO:修复replaceWithSplit
     return new Promise(utils.readFile(preUrl))
         .then((data) => new Promise(utils.writeFile(postUrl,
-            replacer.replaceWithSplit(data, dict).content)));
+            replacer.replaceContent(data, dict).content)));
 }
 export function isInIgnore(path: string, ignoreContent: string, extName: string = '.orz'): boolean {
     let returnValue = false;
@@ -56,7 +57,8 @@ export function translaterFileTree(path: string,
         return new Promise(utils.explorer(path));
     }).then((data) => { // 再进行文件树翻译
         Object.values(data).forEach((value) => {
-            const encoding = value.encoding.toLowerCase();
+            let encoding = '';
+            if (value.encoding) encoding = value.encoding.toLowerCase();
             if (encoding === 'utf-8' && !isInIgnore(value.filename, ignoreContent)) {
                 translateFile(value.filename, value.filename + extName, dict);
             }

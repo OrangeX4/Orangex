@@ -12,8 +12,8 @@ export interface DictMap {
 }
 export interface ObjectReplaced {
     content: string,
-    success: string[],
-    fail: string[]
+        success: string[],
+        fail: string[]
 }
 
 // module.exports ={replaceContent:replaceContent};
@@ -78,42 +78,63 @@ export function turnDict(dict: DictMap): DictMap {
  * @return {DictMap} 返回翻转后的字典
  */
 export function replaceContent(contentStr: string, dict: DictMap): ObjectReplaced {
-    // let dict = JSON.parse(dictionary);
-    const patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/g;
-    // let match = unique(str.match(patt));  // 去重版本
-    const match = contentStr.match(patt);
     let content = contentStr;
-    const fail:string[] = [];
-    const success:string[] = [];
-    // console.log(match);
-    // Object.keys(match).forEach((i) => {
-    //     // console.log(match[i]);n
-    //     const index = parseInt(i, 10);
-    //     if (dict[aMatch]) {
-    //         content = content.replace(aMatch, dict[aMatch]);
-    //         success.push(aMatch);
-    //     } else {
-    //         fail.push(aMatch);
-    //     }
-    //     // console.log(str);
-    // });
-    if (!match) { return { content: '', success: [], fail: [] }; }
-    Object.values(match).forEach((aMatch) => {
-        if (dict[aMatch]) {
-            content = content.replace(new RegExp(aMatch, 'g'), dict[aMatch]);
-            success.push(aMatch);
-        } else {
-            fail.push(aMatch);
+    const fail: string[] = [];
+    const success: string[] = [];
+    // 定义一个用来递归的内部函数
+    function replaceCont(str: string): string {
+        const patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/;
+        const match = str.match(patt);
+        if (!match) {
+            return str;
         }
-    });
-
+        if (match.index === null || match.index === undefined) {
+            return str;
+        }
+        if (!dict[match[0]]) {
+            fail.push(match[0]);
+            return str.slice(0, match.index) + match[0]
+            + replaceCont(str.slice(match.index + match[0].length, str.length));
+        }
+        success.push(match[0]);
+        return str.slice(0, match.index) + dict[match[0]]
+            + replaceCont(str.slice(match.index + match[0].length, str.length));
+    }
+    content = replaceCont(contentStr);
+    // console.log('源文件:-----------------------------------------------------');
+    // console.log(contentStr);
+    // console.log('转换文件:-----------------------------------------------------');
+    // console.log(content);
     return {
         content,
         success,
         fail,
     };
 }
+// export function replaceContent(contentStr: string, dict: DictMap): ObjectReplaced {
+//     // let dict = JSON.parse(dictionary);
+//     const patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/g;
+//     // let match = unique(str.match(patt));  // 去重版本
+//     const match = contentStr.match(patt);
+//     let content = contentStr;
+//     const fail:string[] = [];
+//     const success:string[] = [];
+//     if (!match) { return { content: '', success: [], fail: [] }; }
+//     Object.values(match).forEach((aMatch) => {
+//         if (dict[aMatch]) {
+//             content = content.replace(new RegExp(aMatch, 'g'), dict[aMatch]);
+//             success.push(aMatch);
+//         } else {
+//             fail.push(aMatch);
+//         }
+//     });
 
+//     return {
+//         content,
+//         success,
+//         fail,
+//     };
+// }
 /**
  * @description 带有分隔符的文本替换
  * @param {String} content 要被替换的文本
@@ -129,7 +150,7 @@ export function replaceWithSplit(content: string, dict: DictMap): {
 } {
     const strArray = content.split(split);
     let str = '';
-    const objectArray:(string | ObjectReplaced)[] = [];
+    const objectArray: (string | ObjectReplaced)[] = [];
     let returnValue;
     Object.keys(strArray).forEach((i) => {
         const index = parseInt(i, 10);

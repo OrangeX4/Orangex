@@ -1,0 +1,55 @@
+导入 * as replacer from '../lib/replacer';
+导入 * as utils from '../lib/utils';
+导入 * as fileReplacer from '../lib/fileReplacer';
+
+导出 缺省 函数 start() {
+    常量 str = '爪纹 爪  缺省 如果  ddd ￥中文注释￥ 1数字-Head $';
+
+    函数 testFunc(dict: string) {
+        replacer.setSplit('￥');
+        常量 dictionary = JSON.parse(dict);
+        常量 mergeDict = replacer.mergeDict(dictionary.common, dictionary.computer);
+        // 控制台.log('mergeDict:');
+        // 控制台.log(mergeDict);
+        常量 returnObject = replacer.replaceWithSplit(str, mergeDict);
+        控制台.log('All:');
+        控制台.log(returnObject);
+        // 控制台.log('Array content:');
+        // 控制台.log(returnObject.returnArray[0]);
+        控制台.log('Content:');
+        控制台.log(returnObject.content);
+        控制台.log('Translater:');
+        控制台.log(replacer.replaceWithSplit(returnObject.content,
+            replacer.turnDict(mergeDict)).content);
+
+        // fileReplacer.translateFile('D:/project/Orangex/节点爪/src/测试/测试.txt',
+            // 'D:/project/Orangex/节点爪/src/测试/测试.txt.orz', mergeDict);
+        fileReplacer.translaterFileTree('D:/project/Orangex/节点爪/src', mergeDict);
+    }
+    // utils.readWithWebAndRedirect(testFunc);
+    utils.readWithFile(testFunc);
+    // 常量 testDict = {
+    //     a: '1',
+    //     b: '2',
+    //     c: '3',
+    //     d: '5',
+    //     e: '6',
+    // };
+    // 控制台.log('Merge:');
+    // 控制台.log(replacer.mergeDict({
+    //     a: '1',
+    //     b: '2',
+    //     c: '3',
+    // }, {
+    //     c: '4',
+    //     d: '5',
+    //     e: '6',
+    // }));
+    // 控制台.log('Turn:');
+    // 控制台.log(replacer.turnDict(testDict));
+    // // eslint-disable-next-line no-new
+    // 新 Promise(utils.explorer()).then((data) => {
+    //     控制台.log('File imformation:');
+    //     控制台.log(data);
+    // });
+}

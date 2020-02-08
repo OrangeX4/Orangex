@@ -1,0 +1,21 @@
+/**
+ * @fileOverview 模块入口
+ * @author <a href='https://github.com/OrangeX4/'>OrangeX4</a>
+ * @version 0.1
+ */
+// 导入 minimist from 'minimist';
+// 进行测试
+导入 mainTest from './测试/main.测试';
+
+导出 函数 测试() {
+    mainTest();
+}
+
+exports.测试 = 测试;
+
+// 测试();
+// 常量 argv = minimist(process.argv);
+// 控制台.log('Console Path:');
+// 控制台.log(process.cwd());
+// 控制台.log('Arguments:');
+// 控制台.log(argv);
