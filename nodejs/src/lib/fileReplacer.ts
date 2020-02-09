@@ -32,13 +32,13 @@ export function isInIgnore(path: string, ignoreContent: string, extName: string 
     });
     return returnValue;
 }
-export function isInIgnoreFile(path: string, ignoreFile: string = '.忽略', extName: string = 'orz'): utils.PromiseFunc < boolean > {
-    return (resolve, reject) => {
+export function isInIgnoreFile(path: string, ignoreFile: string = '.忽略', extName: string = 'orz'): Promise < boolean > {
+    return new Promise((resolve, reject) => {
         utils.readFile(ignoreFile).then((data) => {
             if (isInIgnore(path, data, extName)) resolve(true);
             else resolve(false);
         }, (err) => { reject(err); });
-    };
+    });
 }
 /**
  * @description 翻译一个文件夹并写入一个文件内
@@ -54,7 +54,7 @@ export function translaterFileTree(path: string,
     // 获取ignore文件的内容
     utils.readFile(ignoreFile).then((data) => {
         ignoreContent = data;
-        return new Promise(utils.explorer(path));
+        return utils.explorer(path);
     }).then((data) => { // 再进行文件树翻译
         Object.values(data).forEach((value) => {
             let encoding = '';

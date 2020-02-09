@@ -9,15 +9,15 @@ import * as jschardet from 'jschardet';
 // import util from 'util';
 
 
-export interface ResolveFunc < T > {
-    (value ? : T | PromiseLike < T > | undefined): void
-}
-export interface RejectFunc {
-    (reason ? : any): void
-}
-export interface PromiseFunc < T > {
-    (resolve: ResolveFunc < T >, reject: RejectFunc): void
-}
+// export interface ResolveFunc < T > {
+//     (value ? : T | PromiseLike < T > | undefined): void
+// }
+// export interface RejectFunc {
+//     (reason ? : any): void
+// }
+// export interface PromiseFunc < T > {
+//     (resolve: ResolveFunc < T >, reject: RejectFunc): void
+// }
 export interface DetectedMap {
     filename: string,
     encoding: string,
@@ -59,8 +59,8 @@ export function writeFile(url: string, content: string): Promise < void > {
  * @return {PromiseFunc <DetectedMap[]>} 返回一个PromiseFunc,
  * 可传入new Promise(PromiseFunc).then((data)=>{})中调用,其中data是DetectedMap[]格式的
  */
-export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):PromiseFunc <DetectedMap[]> {
-    return (resolve: ResolveFunc <DetectedMap[]>, reject: RejectFunc) => {
+export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):Promise <DetectedMap[]> {
+    return new Promise((resolve, reject) => {
         const data: DetectedMap[] = [];
         fs.readdir(path, (err, files) => {
             // err 为错误 , files 文件名列表包含文件夹与文件
@@ -77,7 +77,7 @@ export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):PromiseF
                         if (stat.isDirectory()) {
                             // 如果是文件夹遍历
                             // explorer(`${path}/${file}`);
-                            new Promise(explorer(`${path}/${file}`)).then((newData) => {
+                            explorer(`${path}/${file}`).then((newData) => {
                                 data.push(...newData);
                                 newResolve();
                             });
@@ -97,7 +97,7 @@ export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):PromiseF
                     resolve(data);
               });
         });
-    };
+    });
 }
 /**
  * @description 通过网络下载文件
@@ -111,7 +111,7 @@ export function downloadWithWeb(path: string = './map/dict.json',
         headers: {
             'Content-Type': 'application/octet-stream',
         },
-    }).then((res: any) => res.buffer()).then((_buffer: Buffer) => {
+    }).then((res: nodefetch.Response) => res.buffer()).then((_buffer: Buffer) => {
         fs.writeFile(path, _buffer, 'binary', (error:Error | null) => {
         console.log(error);
       });
