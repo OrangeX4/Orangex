@@ -24,11 +24,11 @@
 
         // fileReplacer.translateFile('D:/project/Orangex/nodejs/src/test/test.txt',
             // 'D:/project/Orangex/nodejs/src/test/test.txt.orz', mergeDict);
-        fileReplacer.translaterFileTree('D:/project/Orangex/nodejs/src', mergeDict);
+        fileReplacer.translaterFileTreeWithExtname('D:/project/Orangex/nodejs/src', mergeDict);
     }
     // utils.readWithWebAndRedirect(testFunc);
     utils.readWithWebAndRedirect().then(testFunc);
-    // utils.readFile('D:/project/Orangex/map/dict.json').then(testFunc);
+    // utils.readFile('D:/project/Orangex/map/dict.json').then((testFunc));
     // const testDict = {
     //     a: '1',
     //     b: '2',

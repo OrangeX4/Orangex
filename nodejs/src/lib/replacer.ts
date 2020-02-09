@@ -12,8 +12,8 @@ export interface DictMap {
 }
 export interface ObjectReplaced {
     content: string,
-        success: string[],
-        fail: string[]
+    success: string[],
+    fail: string[]
 }
 
 // module.exports ={replaceContent:replaceContent};
@@ -81,9 +81,10 @@ export function turnDict(dict: DictMap): DictMap {
 }
 
 /**
- * @description 翻转字典的键与值,要求键与值一一对应
- * @param {DictMap} dict 要翻转的字典
- * @return {DictMap} 返回翻转后的字典
+ * @description 用dict字典替换相应内容,这是一个同步函数
+ * @param {string} content 要转换的内容
+ * @param {DictMap} dict 使用的字典
+ * @return {ObjectReplaced} 返回替换后的内容,格式为ObjectReplaced
  */
 export function replaceContent(contentStr: string, dict: DictMap): ObjectReplaced {
     let content = contentStr;
@@ -109,12 +110,6 @@ export function replaceContent(contentStr: string, dict: DictMap): ObjectReplace
             + replaceCont(str.slice(match.index + match[0].length, str.length));
     }
     content = replaceCont(contentStr);
-    // console.log('源文件:-----------------------------------------------------');
-    // console.log(contentStr);
-    // console.log('转换文件:-----------------------------------------------------');
-    // console.log(content);
-    // console.log('失败:--------------------------------------');
-    // console.log(unique<string>(fail));
     return {
         content,
         success,

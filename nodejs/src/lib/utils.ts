@@ -49,7 +49,7 @@ export function writeFile(url: string, content: string): Promise < void > {
  * @return {Promise <DetectedMap[]>} 返回一个Promise
  * 可传入PromiseFunc().then((data)=>{})中调用,其中data是DetectedMap[]格式的
  */
-export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):Promise <DetectedMap[]> {
+export function explorer(path:string):Promise <DetectedMap[]> {
     return new Promise((resolve, reject) => {
         const data: DetectedMap[] = [];
         fs.readdir(path, (err, files) => {
@@ -92,9 +92,9 @@ export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):Promise 
 /**
  * @description 通过网络下载文件
  * @param {String} path 保存路径
- * @param {String} url 网页地址
+ * @param {String} url 网页地址,默认为'https://api.github.com/repos/Orangex4/Orangex/releases/latest'
  */
-export function downloadWithWeb(path: string = './map/dict.json',
+export function downloadWithWeb(path: string,
     url: string = 'https://api.github.com/repos/Orangex4/Orangex/releases/latest') {
     nodefetch.default(url, {
         method: 'GET',
@@ -111,8 +111,8 @@ export function downloadWithWeb(path: string = './map/dict.json',
 
 /**
  * @description 通过网络读取内容
- * @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
- * @param {String} url 网页地址
+ * @param {string} url 网页地址
+ * @return {Promise <string> } 返回一个Promise,用then调用后传入读取内容
  */
 export function readWithWeb(
     url: string = 'https://api.github.com/repos/Orangex4/Orangex/releases/latest'): Promise <string> {
@@ -127,7 +127,7 @@ export function readWithWeb(
 /**
  * @description 通过网络下载Github Release的文件
  * @param {String} path 保存路径
- * @param {String} url Github Release的地址，形如'https://api.github.com/repos/Orangex4/Orangex/releases/latest'
+ * @param {String} url Github Release的地址,默认'https://api.github.com/repos/Orangex4/Orangex/releases/latest'
  */
 export function downloadWithWebAndRedirect(path: string,
     url: string = 'https://api.github.com/repos/Orangex4/Orangex/releases/latest') {
@@ -143,11 +143,11 @@ export function downloadWithWebAndRedirect(path: string,
 
 /**
  * @description 通过网络读取Github Release的文件
- * @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
  * @param {String} url 网页地址，形如'https://api.github.com/repos/Orangex4/Orangex/releases/latest'
+ * @return {Promise < string >} 返回一个Promise,用then调用后传入读取到的文本
  */
 export function readWithWebAndRedirect(
-    url: string = 'https://api.github.com/repos/Orangex4/Orangex/releases/latest') {
+    url: string = 'https://api.github.com/repos/Orangex4/Orangex/releases/latest'): Promise < string > {
     return readWithWeb(url).then((html: string) => {
         const jsonObject = JSON.parse(html);
         const fileUrl = jsonObject.assets[0].browser_download_url;
