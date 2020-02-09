@@ -68,7 +68,7 @@ export function translaterFileTreeWithExtname(path: string,
     utils.readFile(ignoreFilePath).then((data) => {
         ignoreContent = data;
         return utils.explorer(path);
-    }).then((data) => { // 再进行文件树翻译
+    }, () => utils.explorer(path)).then((data) => { // 再进行文件树翻译
         Object.values(data).forEach((value) => {
             let encoding = '';
             if (value.encoding) encoding = value.encoding.toLowerCase();
