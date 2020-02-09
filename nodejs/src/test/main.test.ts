@@ -6,7 +6,7 @@ export default function start() {
     const str = 'jsx js  default if  ddd ￥中文注释￥ 1数字-Head $';
 
     function testFunc(dict: string) {
-        replacer.setSplit('￥');
+        replacer.setSplit('￥'); // ￥
         const dictionary = JSON.parse(dict);
         const mergeDict = replacer.mergeDict(dictionary.common, dictionary.computer);
         // console.log('mergeDict:');

@@ -3,7 +3,7 @@ import * as utils from '../lib/utils';
 import * as fileReplacer from '../lib/fileReplacer';
 console
 export default function () {
-    const str = 'jsx js  default if  ddd ￥中文注释￥ 1数字-Head $';
+    const str = 'jsx js  default if  ddd ￥中文注释 1数字-Head $';
 
     function testFunc(dict: string) {
         replacer.setSplit('￥');

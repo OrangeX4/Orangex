@@ -6,38 +6,38 @@
     常量 str = '爪纹 爪  缺省 如果  ddd 中文注释 1数字-Head $';
 
     函数 testFunc(dict: string) {
-        replacer.setSplit('');
-        const dictionary = JSON.parse(dict);
-        const mergeDict = replacer.mergeDict(dictionary.common, dictionary.computer);
-        // console.log('mergeDict:');
-        // console.log(mergeDict);
-        const returnObject = replacer.replaceWithSplit(str, mergeDict);
-        console.log('All:');
-        console.log(returnObject);
-        // console.log('Array content:');
-        // console.log(returnObject.returnArray[0]);
-        console.log('Content:');
-        console.log(returnObject.content);
-        console.log('Translater:');
-        console.log(replacer.replaceWithSplit(returnObject.content,
+        replacer.setSplit(''); // 
+        常量 dictionary = JSON.parse(dict);
+        常量 mergeDict = replacer.mergeDict(dictionary.common, dictionary.computer);
+        // 控制台.log('mergeDict:');
+        // 控制台.log(mergeDict);
+        常量 returnObject = replacer.replaceWithSplit(str, mergeDict);
+        控制台.log('All:');
+        控制台.log(returnObject);
+        // 控制台.log('Array content:');
+        // 控制台.log(returnObject.returnArray[0]);
+        控制台.log('Content:');
+        控制台.log(returnObject.content);
+        控制台.log('Translater:');
+        控制台.log(replacer.replaceWithSplit(returnObject.content,
             replacer.turnDict(mergeDict)).content);
 
-        // fileReplacer.translateFile('D:/project/Orangex/nodejs/src/test/test.txt',
-            // 'D:/project/Orangex/nodejs/src/test/test.txt.orz', mergeDict);
-        fileReplacer.translaterFileTreeWithExtname('D:/project/Orangex/nodejs/src', mergeDict);
+        // fileReplacer.translateFile('D:/project/Orangex/节点爪/src/测试/测试.txt',
+            // 'D:/project/Orangex/节点爪/src/测试/测试.txt.orz', mergeDict);
+        fileReplacer.translaterFileTreeWithExtname('D:/project/Orangex/节点爪/src', mergeDict);
     }
     // utils.readWithWebAndRedirect(testFunc);
     utils.readWithWebAndRedirect().then(testFunc);
     // utils.readFile('D:/project/Orangex/map/dict.json').then((testFunc));
-    // const testDict = {
+    // 常量 testDict = {
     //     a: '1',
     //     b: '2',
     //     c: '3',
     //     d: '5',
     //     e: '6',
     // };
-    // console.log('Merge:');
-    // console.log(replacer.mergeDict({
+    // 控制台.log('Merge:');
+    // 控制台.log(replacer.mergeDict({
     //     a: '1',
     //     b: '2',
     //     c: '3',
@@ -46,11 +46,11 @@
     //     d: '5',
     //     e: '6',
     // }));
-    // console.log('Turn:');
-    // console.log(replacer.turnDict(testDict));
+    // 控制台.log('Turn:');
+    // 控制台.log(replacer.turnDict(testDict));
     // // eslint-disable-next-line no-new
-    // new Promise(utils.explorer()).then((data) => {
-    //     console.log('File imformation:');
-    //     console.log(data);
+    // 新 Promise(utils.explorer()).then((data) => {
+    //     控制台.log('File imformation:');
+    //     控制台.log(data);
     // });
 }
