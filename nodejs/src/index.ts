@@ -15,16 +15,16 @@ import * as utils from './lib/utils';
 export function test() {
     mainTest();
 }
-export async function translaterFileTreeWithExtname(path: string) {
+export async function translaterFileTree(path: string, isWithExtname: boolean) {
     utils.readWithWebAndRedirect().then((data) => {
         const dictionary = JSON.parse(data);
         const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
-        fileReplacer.translaterFileTreeWithExtname(path, dict);
+        fileReplacer.translaterFileTree(path, dict, isWithExtname);
     });
 }
 
 exports.test = test;
-exports.translaterFileTreeWithExtname = translaterFileTreeWithExtname;
+exports.translaterFileTree = translaterFileTree;
 
 // translaterFileTreeWithExtname(
     // Path.dirname(Path.normalize('D:/project/Orangex/nodejs/src/test')));

@@ -24,11 +24,10 @@ if (argv._[2]) {
             index.test();
             break;
         case '英转汉':
-            // TODO: 正式使用时注释掉下一行
-            // console.log('原来:-----------------------------------');
-            // console.log(argv._[1]);
-            // argv._[1] = 'D:/project/Orangex/nodejs/src/test/';
-            index.translaterFileTreeWithExtname(Path.normalize(process.cwd()));
+            index.translaterFileTree(Path.normalize(process.cwd()), true);
+            break;
+        case '汉转英':
+            index.translaterFileTree(Path.normalize(process.cwd()), false);
             break;
         default:
             console.log(`未找到命令${argv._[2]}`);
