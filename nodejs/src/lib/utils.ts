@@ -166,33 +166,3 @@ export function readWithWebAndRedirect(callback: (buf: string) => void,
         readWithWeb(callback, fileUrl);
     }, url);
 }
-
-/**
- * @description 通过文件读取内容
- * @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
- * @param {String} path 文件路径
- */
-export function readWithFile(callback: (buf: string) => void,
-    path: string = 'D:\\project\\Orangex\\map\\dict.json') {
-    let data: string = '';
-    // 创建可读流
-    const readerStream = fs.createReadStream(path);
-
-    // 设置编码为 utf8。
-    readerStream.setEncoding('UTF8');
-
-    // 处理流事件 --> data, end, and error
-    readerStream.on('data', (chunk: string) => {
-        data += chunk;
-    });
-
-    readerStream.on('end', () => {
-        // console.log(data);
-        callback(data);
-    });
-
-    readerStream.on('error', (err: Error) => {
-        // eslint-disable-next-line no-console
-        console.log(err.stack);
-    });
-}

@@ -27,7 +27,7 @@
         fileReplacer.translaterFileTree('D:/project/Orangex/nodejs/src', mergeDict);
     }
     // utils.readWithWebAndRedirect(testFunc);
-    utils.readWithFile(testFunc);
+    utils.readFile('D:/project/Orangex/map/dict.json').then(testFunc);
     // const testDict = {
     //     a: '1',
     //     b: '2',
