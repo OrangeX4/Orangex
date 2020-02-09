@@ -27,7 +27,8 @@ export default function start() {
         fileReplacer.translaterFileTree('D:/project/Orangex/nodejs/src', mergeDict);
     }
     // utils.readWithWebAndRedirect(testFunc);
-    utils.readFile('D:/project/Orangex/map/dict.json').then(testFunc);
+    utils.readWithWebAndRedirect().then(testFunc);
+    // utils.readFile('D:/project/Orangex/map/dict.json').then(testFunc);
     // const testDict = {
     //     a: '1',
     //     b: '2',
@@ -53,3 +54,4 @@ export default function start() {
     //     console.log(data);
     // });
 }
+start();

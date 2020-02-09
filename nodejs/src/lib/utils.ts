@@ -8,16 +8,6 @@ import * as nodefetch from 'node-fetch';
 import * as jschardet from 'jschardet';
 // import util from 'util';
 
-
-// export interface ResolveFunc < T > {
-//     (value ? : T | PromiseLike < T > | undefined): void
-// }
-// export interface RejectFunc {
-//     (reason ? : any): void
-// }
-// export interface PromiseFunc < T > {
-//     (resolve: ResolveFunc < T >, reject: RejectFunc): void
-// }
 export interface DetectedMap {
     filename: string,
     encoding: string,
@@ -56,8 +46,8 @@ export function writeFile(url: string, content: string): Promise < void > {
 /**
  * @description 翻译一个文件并写入一个文件内
  * @param {string} path 被翻译的文件的路径
- * @return {PromiseFunc <DetectedMap[]>} 返回一个PromiseFunc,
- * 可传入new Promise(PromiseFunc).then((data)=>{})中调用,其中data是DetectedMap[]格式的
+ * @return {Promise <DetectedMap[]>} 返回一个Promise
+ * 可传入PromiseFunc().then((data)=>{})中调用,其中data是DetectedMap[]格式的
  */
 export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):Promise <DetectedMap[]> {
     return new Promise((resolve, reject) => {
@@ -124,19 +114,20 @@ export function downloadWithWeb(path: string = './map/dict.json',
  * @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
  * @param {String} url 网页地址
  */
-export function readWithWeb(callback: (buf: string) => void,
-    url: string = 'https://api.github.com/repos/Orangex4/Orangex/releases/latest') {
-    nodefetch.default(url, {
+export function readWithWeb(
+    url: string = 'https://api.github.com/repos/Orangex4/Orangex/releases/latest'): Promise <string> {
+    return nodefetch.default(url, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/octet-stream',
         },
-    }).then((value: nodefetch.Response) => value.buffer()).then((_buffer: Buffer) => {
-        // fs.writeFile(p, _buffer, 'binary', function (err) {
-        //     console.log(err || p);
-        // });
-        callback(_buffer.toString('utf8'));
-    });
+    }).then((value: nodefetch.Response) => {
+        console.log(value.buffer());
+        console.log(value.buffer().toString());
+        return value.buffer().toString();
+    }, (err) => {
+        throw err;
+        });
 }
 /**
  * @description 通过网络下载Github Release的文件
@@ -145,12 +136,14 @@ export function readWithWeb(callback: (buf: string) => void,
  */
 export function downloadWithWebAndRedirect(path: string,
     url: string = 'https://api.github.com/repos/Orangex4/Orangex/releases/latest') {
-    readWithWeb((html: string) => {
+    readWithWeb(url).then((html: string) => {
+        // console.log('html:-------------------------------------');
+        // console.log(html);
         const jsonObject = JSON.parse(html);
         const fileUrl = jsonObject.assets[0].browser_download_url;
         // console.log(fileUrl);
         downloadWithWeb(path, fileUrl);
-    }, url);
+    });
 }
 
 /**
@@ -158,11 +151,11 @@ export function downloadWithWebAndRedirect(path: string,
  * @param {Function} callback 回调函数,会传入获取到的内容,形如 callback(buffer);
  * @param {String} url 网页地址，形如'https://api.github.com/repos/Orangex4/Orangex/releases/latest'
  */
-export function readWithWebAndRedirect(callback: (buf: string) => void,
+export function readWithWebAndRedirect(
     url: string = 'https://api.github.com/repos/Orangex4/Orangex/releases/latest') {
-    readWithWeb((html: string) => {
+    return readWithWeb(url).then((html: string) => {
         const jsonObject = JSON.parse(html);
         const fileUrl = jsonObject.assets[0].browser_download_url;
-        readWithWeb(callback, fileUrl);
-    }, url);
+        return readWithWeb(fileUrl);
+    });
 }
