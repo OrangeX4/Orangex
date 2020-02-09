@@ -17,9 +17,9 @@ export function translateFile(preUrl: string,
     postUrl: string,
     dict: replacer.DictMap): Promise < void > {
     // TODO:修复replaceWithSplit
-    return new Promise(utils.readFile(preUrl))
-        .then((data) => new Promise(utils.writeFile(postUrl,
-            replacer.replaceWithSplit(data, dict).content)));
+    return utils.readFile(preUrl)
+        .then((data) => utils.writeFile(postUrl,
+            replacer.replaceWithSplit(data, dict).content));
 }
 export function isInIgnore(path: string, ignoreContent: string, extName: string = '.orz'): boolean {
     let returnValue = false;
@@ -34,7 +34,7 @@ export function isInIgnore(path: string, ignoreContent: string, extName: string 
 }
 export function isInIgnoreFile(path: string, ignoreFile: string = '.忽略', extName: string = 'orz'): utils.PromiseFunc < boolean > {
     return (resolve, reject) => {
-        new Promise(utils.readFile(ignoreFile)).then((data) => {
+        utils.readFile(ignoreFile).then((data) => {
             if (isInIgnore(path, data, extName)) resolve(true);
             else resolve(false);
         }, (err) => { reject(err); });
@@ -52,7 +52,7 @@ export function translaterFileTree(path: string,
     extName: string = '.orz') {
     let ignoreContent = ignoreFile;
     // 获取ignore文件的内容
-    new Promise(utils.readFile(ignoreFile)).then((data) => {
+    utils.readFile(ignoreFile).then((data) => {
         ignoreContent = data;
         return new Promise(utils.explorer(path));
     }).then((data) => { // 再进行文件树翻译

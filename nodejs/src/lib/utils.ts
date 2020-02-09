@@ -29,15 +29,15 @@ export interface DetectedMap {
  * @param {string} url URL,即文件的路径
  * @return {Promise <string>} 返回一个Promise
  */
-export function readFile(url: string): PromiseFunc < string > {
-    return (resolve: ResolveFunc < string >, reject: RejectFunc) => {
+export function readFile(url: string): Promise < string > {
+    return new Promise((resolve, reject) => {
         fs.readFile(url, 'utf-8', (err, data) => {
             // console.log('读取文件:-------------------------------------');
             // console.log(data);
             if (err) reject(err);
             resolve(data);
         });
-    };
+    });
 }
 /**
  * @description 写入文件
@@ -45,13 +45,13 @@ export function readFile(url: string): PromiseFunc < string > {
  * @param {string} content 写入的内容
  * @return {Promise <string>} 返回一个Promise
  */
-export function writeFile(url: string, content: string): PromiseFunc < void > {
-    return (resolve: ResolveFunc < void >, reject: RejectFunc) => {
+export function writeFile(url: string, content: string): Promise < void > {
+    return new Promise((resolve, reject) => {
         fs.writeFile(url, content, (err) => {
             if (err) reject(err);
             else resolve();
         });
-    };
+    });
 }
 /**
  * @description 翻译一个文件并写入一个文件内
