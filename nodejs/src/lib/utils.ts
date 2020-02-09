@@ -4,7 +4,7 @@
  * @version 0.1
  */
 import * as fs from 'fs';
-import nodefetch from 'node-fetch';
+import * as nodefetch from 'node-fetch';
 import * as jschardet from 'jschardet';
 // import util from 'util';
 
@@ -106,7 +106,7 @@ export function explorer(path:string = 'D:/project/Orangex/nodejs/src'):PromiseF
  */
 export function downloadWithWeb(path: string = './map/dict.json',
     url: string = 'https://api.github.com/repos/Orangex4/Orangex/releases/latest') {
-    nodefetch(url, {
+    nodefetch.default(url, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/octet-stream',
@@ -126,12 +126,12 @@ export function downloadWithWeb(path: string = './map/dict.json',
  */
 export function readWithWeb(callback: (buf: string) => void,
     url: string = 'https://api.github.com/repos/Orangex4/Orangex/releases/latest') {
-    nodefetch(url, {
+    nodefetch.default(url, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/octet-stream',
         },
-    }).then((res: any) => res.buffer()).then((_buffer: Buffer) => {
+    }).then((value: nodefetch.Response) => value.buffer()).then((_buffer: Buffer) => {
         // fs.writeFile(p, _buffer, 'binary', function (err) {
         //     console.log(err || p);
         // });
