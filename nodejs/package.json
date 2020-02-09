@@ -7,7 +7,7 @@
   },
   "main": "./dist/main.js",
   "scripts": {
-    "test": "npm run build && node dist/main && 橙式 测试 && cd src && cd 测试 && 橙式 英转汉 && cd .. && cd ..",
+    "test": "npm run build && node dist/main && 橙式 测试 && cd src && cd 测试 && 橙式 英转汉",
     "clean-linux": "rm -f /node_modules && npm install",
     "clean": "rd /s/q node_modules && npm install",
     "start": "webpack --progress --env.development --env.nodemon",

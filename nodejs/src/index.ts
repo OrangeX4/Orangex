@@ -19,7 +19,8 @@ export async function translaterFileTree(path: string, isWithExtname: boolean) {
     utils.readWithWebAndRedirect().then((data) => {
         const dictionary = JSON.parse(data);
         const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
-        fileReplacer.translaterFileTree(path, dict, isWithExtname);
+        if (isWithExtname) fileReplacer.translaterFileTree(path, dict, isWithExtname);
+        else fileReplacer.translaterFileTree(path, replacer.turnDict(dict), isWithExtname);
     });
 }
 

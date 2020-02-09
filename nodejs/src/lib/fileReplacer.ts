@@ -87,7 +87,11 @@ export function translaterFileTree(path: string,
             if (value.encoding) encoding = value.encoding.toLowerCase();
             if (encoding === 'utf-8' && !isInIgnore(value.filename, ignoreContent, isWithExtname)) {
                 // 真正重要的部分,在这里修改其他内容
-                translateFile(value.filename, value.filename + extName, dict);
+                if (isWithExtname) translateFile(value.filename, value.filename + extName, dict);
+                else {
+                    translateFile(value.filename,
+                        value.filename.slice(0, value.filename.length - extName.length), dict);
+                }
             }
         });
     });
