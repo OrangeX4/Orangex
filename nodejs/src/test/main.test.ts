@@ -1,6 +1,6 @@
 import * as replacer from '../lib/replacer';
 import * as utils from '../lib/utils';
-import * as fileReplacer from '../lib/fileReplacer';
+// import * as fileReplacer from '../lib/fileReplacer';
 
 export default function start() {
     const str = 'jsx js  default if  ddd ￥中文注释￥ 1数字-Head $';
@@ -24,7 +24,8 @@ export default function start() {
 
         // fileReplacer.translateFile('D:/project/Orangex/nodejs/src/test/test.txt',
             // 'D:/project/Orangex/nodejs/src/test/test.txt.orz', mergeDict);
-        fileReplacer.translaterFileTreeWithExtname('D:/project/Orangex/nodejs/src/test', mergeDict);
+        // fileReplacer.translaterFileTreeWithExtname(
+            // 'D:/project/Orangex/nodejs/src/test', mergeDict);
     }
     // utils.readWithWebAndRedirect(testFunc);
     utils.readWithWebAndRedirect().then(testFunc);

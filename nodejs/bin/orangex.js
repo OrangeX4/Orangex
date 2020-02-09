@@ -5,6 +5,7 @@
  * @version 0.1
  */
 const minimist = require('minimist');
+const Path = require('path');
 
 const argv = minimist(process.argv);
 console.log('Console Path:');
@@ -21,6 +22,13 @@ if (argv._[2]) {
             break;
         case '测试':
             index.test();
+            break;
+        case '英转汉':
+            // TODO: 正式使用时注释掉下一行
+            // console.log('原来:-----------------------------------');
+            // console.log(argv._[1]);
+            // argv._[1] = 'D:/project/Orangex/nodejs/src/test/';
+            index.translaterFileTreeWithExtname(Path.normalize(process.cwd()));
             break;
         default:
             console.log(`未找到命令${argv._[2]}`);
