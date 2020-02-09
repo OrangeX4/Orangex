@@ -42,3 +42,10 @@
     console.log('Turn:');
     console.log(replacer.turnDict(testDict));
 }
+
+"TypeError: body used already for: https://api.github.com/repos/Orangex4/Orangex/releases/latest
+    at Response.consumeBody (D:\project\Orangex\nodejs\node_modules\node-fetch\lib\index.js:343:30)
+    at Response.buffer (D:\project\Orangex\nodejs\node_modules\node-fetch\lib\index.js:294:22)
+    at eval (eval at <anonymous> (D:\project\Orangex\nodejs\src\lib\utils.ts:127:22), <anonymous>:1:7)
+    at D:\project\Orangex\nodejs\src\lib\utils.ts:127:22
+    at processTicksAndRejections (internal/process/task_queues.js:94:5)"

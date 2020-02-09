@@ -121,13 +121,8 @@ export function readWithWeb(
         headers: {
             'Content-Type': 'application/octet-stream',
         },
-    }).then((value: nodefetch.Response) => {
-        console.log(value.buffer());
-        console.log(value.buffer().toString());
-        return value.buffer().toString();
-    }, (err) => {
-        throw err;
-        });
+    }).then((value: nodefetch.Response) => value.buffer())
+    .then((_buffer: Buffer) => _buffer.toString());
 }
 /**
  * @description 通过网络下载Github Release的文件
