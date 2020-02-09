@@ -24,7 +24,7 @@ export default function start() {
 
         // fileReplacer.translateFile('D:/project/Orangex/nodejs/src/test/test.txt',
             // 'D:/project/Orangex/nodejs/src/test/test.txt.orz', mergeDict);
-        fileReplacer.translaterFileTreeWithExtname('D:/project/Orangex/nodejs/src', mergeDict);
+        fileReplacer.translaterFileTreeWithExtname('D:/project/Orangex/nodejs/src/test', mergeDict);
     }
     // utils.readWithWebAndRedirect(testFunc);
     utils.readWithWebAndRedirect().then(testFunc);
