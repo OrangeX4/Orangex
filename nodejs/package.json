@@ -1,6 +1,6 @@
 {
   "name": "orangex",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Orangex is a translater for Chinese.",
   "bin": {
     "橙式": "./bin/orangex.js"
