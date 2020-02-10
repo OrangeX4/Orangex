@@ -15,17 +15,23 @@ import * as utils from './lib/utils';
 export function test() {
     mainTest();
 }
-export async function translaterFileTree(path: string, isWithExtname: boolean, isDeep: boolean) {
-    const data = await utils.readFile('D:/project/Orangex/map/dict.json');// .then((data) => {
+export async function translaterFileTree(path: string,
+    dictFilePath: string,
+    isWithExtname: boolean,
+    isDeep: boolean) {
+    const data = await utils.readFile(dictFilePath);// .then((data) => {
     const dictionary = JSON.parse(data);
     const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
     if (isWithExtname) fileReplacer.translaterFileTree(path, dict, isWithExtname, isDeep);
     else fileReplacer.translaterFileTree(path, replacer.turnDict(dict), isWithExtname, isDeep);
     // });
 }
-
+export function readDictFileByGithubRelease(url: string): Promise<string> {
+    return utils.readWithWebAndRedirect(url);
+}
 exports.test = test;
 exports.translaterFileTree = translaterFileTree;
+exports.readDictFileByGithubRelease = readDictFileByGithubRelease;
 
 // translaterFileTree(Path.normalize('D:/project/Orangex/nodejs/src/测试'), false, false);
 // test();

@@ -6,14 +6,20 @@
  */
 const minimist = require('minimist');
 const Path = require('path');
+const fs = require('fs');
 
 const argv = minimist(process.argv);
-console.log('Console Path:');
+console.log('控制台目录:');
 console.log(process.cwd());
-console.log('Arguments:');
+console.log('命令行参数:');
 console.log(argv);
 
 const index = require('../dist/main.js');
+
+function callback(err) {
+    if (err) console.log('读取最新字典失败!');
+    else console.log('读取最新字典成功!');
+}
 
 if (argv._[2]) {
     switch (argv._[2]) {
@@ -23,16 +29,21 @@ if (argv._[2]) {
         case '测试':
             index.test();
             break;
+        case '更新字典':
+            console.log('正在更新字典文件...');
+            index.readDictFileByGithubRelease('https://api.github.com/repos/Orangex4/Orangex/releases/latest').then((dict) => {
+            fs.writeFile(`${Path.dirname(argv._[1])}/dict.json`, dict, callback);
+            });
+            break;
         case '英转汉':
-            index.translaterFileTree(Path.normalize(process.cwd()), true, argv.深);
-            // console.log(argv.深);
+            index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, true, argv.深);
             break;
         case '汉转英':
-            index.translaterFileTree(Path.normalize(process.cwd()), false, argv.深);
+            index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, false, argv.深);
             break;
         default:
             console.log(`未找到命令'${argv._[2]}'`);
-    }
-} else {
-    console.log('使用"橙式 帮助"命令可获取帮助信息:)');
+        }
+    } else {
+        console.log('使用"橙式 帮助"命令可获取帮助信息:)');
 }
