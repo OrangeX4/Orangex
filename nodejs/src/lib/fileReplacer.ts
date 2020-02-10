@@ -68,20 +68,22 @@ export function isInIgnoreFile(path: string,
  * @param {string} path 被翻译的文件夹路径
  * @param {replacer.DictMap} dict 替换时使用的字典
  * @param {boolean} isWithExtname 英转汉就填true, 汉转英就填false, 默认为true
+ * @param {boolean} isDeep 是否进入到子目录
  * @param {string} ignoreFilePath 忽略文件路径,可用相对路径
  * @param {string} extName 要加上的拓展名, 记得要包括点号, 默认'.orz'
  */
 export function translaterFileTree(path: string,
     dict: replacer.DictMap,
-    isWithExtname: boolean = true,
+    isWithExtname: boolean,
+    isDeep: boolean,
     ignoreFilePath: string = '.忽略',
     extName: string = '.orz') {
     let ignoreContent = ignoreFilePath;
     // 获取ignore文件的内容
     utils.readFile(ignoreFilePath).then((data) => {
         ignoreContent = data;
-        return utils.explorer(path);
-    }, () => utils.explorer(path)).then((data) => { // 再进行文件树翻译
+        return utils.explorer(path, isDeep);
+    }, () => utils.explorer(path, isDeep)).then((data) => { // 再进行文件树翻译
         Object.values(data).forEach((value) => {
             let encoding = '';
             if (value.encoding) encoding = value.encoding.toLowerCase();

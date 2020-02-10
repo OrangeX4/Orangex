@@ -44,12 +44,13 @@ export function writeFile(url: string, content: string): Promise < void > {
     });
 }
 /**
- * @description 翻译一个文件并写入一个文件内
- * @param {string} path 被翻译的文件的路径
+ * @description 获取文件夹内文件信息
+ * @param {string} path 文件夹的路径
+ * @param {boolean} isDeep 是否进入到子目录
  * @return {Promise <DetectedMap[]>} 返回一个Promise
  * 可传入PromiseFunc().then((data)=>{})中调用,其中data是DetectedMap[]格式的
  */
-export function explorer(path:string):Promise <DetectedMap[]> {
+export function explorer(path:string, isDeep: boolean):Promise <DetectedMap[]> {
     return new Promise((resolve, reject) => {
         const data: DetectedMap[] = [];
         fs.readdir(path, (err, files) => {
@@ -65,12 +66,14 @@ export function explorer(path:string):Promise <DetectedMap[]> {
                             return;
                         }
                         if (stat.isDirectory()) {
-                            // 如果是文件夹遍历
+                            // 如果是文件夹遍历且有深度遍历选项的话就递归调用
                             // explorer(`${path}/${file}`);
-                            explorer(`${path}/${file}`).then((newData) => {
+                            if (isDeep) {
+                            explorer(`${path}/${file}`, isDeep).then((newData) => {
                                 data.push(...newData);
                                 newResolve();
                             });
+                            } else newResolve();
                         } else {
                             // 读出所有的文件
                             const str = fs.readFileSync(`${path}/${file}`);

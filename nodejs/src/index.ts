@@ -15,20 +15,19 @@ import * as utils from './lib/utils';
 export function test() {
     mainTest();
 }
-export async function translaterFileTree(path: string, isWithExtname: boolean) {
-    utils.readWithWebAndRedirect().then((data) => {
-        const dictionary = JSON.parse(data);
-        const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
-        if (isWithExtname) fileReplacer.translaterFileTree(path, dict, isWithExtname);
-        else fileReplacer.translaterFileTree(path, replacer.turnDict(dict), isWithExtname);
-    });
+export async function translaterFileTree(path: string, isWithExtname: boolean, isDeep: boolean) {
+    const data = await utils.readWithWebAndRedirect();// .then((data) => {
+    const dictionary = JSON.parse(data);
+    const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
+    if (isWithExtname) fileReplacer.translaterFileTree(path, dict, isWithExtname, isDeep);
+    else fileReplacer.translaterFileTree(path, replacer.turnDict(dict), isWithExtname, isDeep);
+    // });
 }
 
 exports.test = test;
 exports.translaterFileTree = translaterFileTree;
 
-// translaterFileTreeWithExtname(
-    // Path.dirname(Path.normalize('D:/project/Orangex/nodejs/src/test')));
+// translaterFileTree(Path.normalize('D:/project/Orangex/nodejs/src/测试'), true, false);
 // test();
 // const argv = minimist(process.argv);
 // console.log('Console Path:');
