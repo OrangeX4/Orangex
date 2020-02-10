@@ -37,6 +37,7 @@ if (argv._[2]) {
             });
             break;
         case '英转汉':
+            // TODO: 修复缺少dict.json错误
             try {
                 index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, true, argv.深);
             } catch (err) {
