@@ -16,7 +16,7 @@ export function test() {
     mainTest();
 }
 export async function translaterFileTree(path: string, isWithExtname: boolean, isDeep: boolean) {
-    const data = await utils.readWithWebAndRedirect();// .then((data) => {
+    const data = await utils.readFile('D:/project/Orangex/map/dict.json');// .then((data) => {
     const dictionary = JSON.parse(data);
     const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
     if (isWithExtname) fileReplacer.translaterFileTree(path, dict, isWithExtname, isDeep);
@@ -27,7 +27,7 @@ export async function translaterFileTree(path: string, isWithExtname: boolean, i
 exports.test = test;
 exports.translaterFileTree = translaterFileTree;
 
-// translaterFileTree(Path.normalize('D:/project/Orangex/nodejs/src/测试'), true, false);
+// translaterFileTree(Path.normalize('D:/project/Orangex/nodejs/src/测试'), false, false);
 // test();
 // const argv = minimist(process.argv);
 // console.log('Console Path:');

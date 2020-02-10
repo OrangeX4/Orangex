@@ -7,6 +7,7 @@ import * as Path from 'path';
 import * as replacer from './replacer';
 import * as utils from './utils';
 
+
 /**
  * @description 翻译一个文件并写入一个文件内
  * @param {string} preUrl 被翻译的文件的路径
@@ -31,7 +32,7 @@ export function translateFile(preUrl: string,
 export function isInIgnore(path: string,
     ignoreContent: string,
     isWithExtname: boolean,
-    extName: string = '.orz'): boolean {
+    extName: string = '.橙'): boolean {
     let returnValue = false;
     if (isWithExtname) {
         if (path.endsWith(extName)) { returnValue = true; }
@@ -55,7 +56,7 @@ export function isInIgnore(path: string,
 export function isInIgnoreFile(path: string,
     ignoreFilePath: string = '.忽略',
     isWithExtname: boolean,
-    extName: string = 'orz'): Promise < boolean > {
+    extName: string = '.橙'): Promise < boolean > {
     return new Promise((resolve, reject) => {
         utils.readFile(ignoreFilePath).then((data) => {
             if (isInIgnore(path, data, isWithExtname, extName)) resolve(true);
@@ -77,7 +78,7 @@ export function translaterFileTree(path: string,
     isWithExtname: boolean,
     isDeep: boolean,
     ignoreFilePath: string = '.忽略',
-    extName: string = '.orz') {
+    extName: string = '.橙') {
     let ignoreContent = ignoreFilePath;
     // 获取ignore文件的内容
     utils.readFile(ignoreFilePath).then((data) => {
@@ -89,10 +90,18 @@ export function translaterFileTree(path: string,
             if (value.encoding) encoding = value.encoding.toLowerCase();
             if (encoding === 'utf-8' && !isInIgnore(value.filename, ignoreContent, isWithExtname)) {
                 // 真正重要的部分,在这里修改其他内容
-                if (isWithExtname) translateFile(value.filename, value.filename + extName, dict);
-                else {
+                if (isWithExtname) {
+                    const savedFileName = `${Path.dirname(value.filename)}/${replacer.replaceContent(Path.basename(value.filename), dict).content}${extName}`;
+                    translateFile(value.filename, savedFileName, dict);
+                } else {
+                    // const turnedDict = replacer.turnDict(dict);
+                    const savedFileName = `${Path.dirname(value.filename)}/${replacer.replaceContent(
+                        Path.basename(value.filename
+                        .slice(0, value.filename.length - extName.length)), dict)
+                        .content}`;
                     translateFile(value.filename,
-                        value.filename.slice(0, value.filename.length - extName.length), dict);
+                        savedFileName,
+                        dict);
                 }
             }
         });
