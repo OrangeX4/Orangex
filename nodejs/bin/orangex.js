@@ -42,6 +42,10 @@ fs.exists(`${__dirname}/dict.json`, (isExist) => {
                 case '测试':
                     index.test();
                     break;
+                case '字典':
+                    if (argv._[3]) index.readDict(argv._[3], dictFile);
+                    else console.log('请输入参数...');
+                    break;
                 case '更新字典':
                     updateDict();
                     break;
