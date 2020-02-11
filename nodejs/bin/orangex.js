@@ -21,47 +21,40 @@ function callback(err) {
     if (err) console.log('读取最新字典失败!');
     else console.log('读取最新字典成功!');
 }
-
-if (argv._[2]) {
-    switch (argv._[2]) {
-        case '帮助':
-            console.log('帮助信息: 使用"橙式 测试"开始测试.');
-            break;
-        case '测试':
-            index.test();
-            break;
-        case '更新字典':
-            console.log('正在更新字典文件...');
-            index.readDictFileByGithubRelease('https://api.github.com/repos/Orangex4/Orangex/releases/latest').then((dict) => {
-            fs.writeFile(`${Path.dirname(argv._[1])}/dict.json`, dict, callback);
-            });
-            break;
-        case '英转汉':
-            // TODO: 修复缺少dict.json错误
-            try {
-                index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, true, argv.深);
-            } catch (err) {
-                childProcess.exec('橙式 更新字典', (error) => {
-                    if (error !== null) {
-                      console.log(`运行错误！: ${error}`);
-                    } else index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, true, argv.深);
-                });
-            }
-            break;
-        case '汉转英':
-            try {
-                index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, false, argv.深);
-            } catch (err) {
-                childProcess.exec('橙式 更新字典', (error) => {
-                    if (error !== null) {
-                      console.log(`运行错误！: ${error}`);
-                    } else index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, false, argv.深);
-                });
-            }
-            break;
-        default:
-            console.log(`未找到命令'${argv._[2]}'`);
+// 判断字典文件是否存在, 不存在就执行命令"橙式 更新字典", 存在就进一步判断
+fs.exists(`${Path.dirname(argv._[1])}/dict.json`, (isExist) => {
+    if (isExist) {
+        if (argv._[2]) {
+            switch (argv._[2]) {
+                case '帮助':
+                    console.log('帮助信息: 使用"橙式 测试"开始测试.');
+                    break;
+                case '测试':
+                    index.test();
+                    break;
+                case '更新字典':
+                    console.log('正在更新字典文件...');
+                    index.readDictFileByGithubRelease('https://api.github.com/repos/Orangex4/Orangex/releases/latest').then((dict) => {
+                    fs.writeFile(`${Path.dirname(argv._[1])}/dict.json`, dict, callback);
+                    });
+                    break;
+                case '英转汉':
+                    index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, true, argv.深);
+                    break;
+                case '汉转英':
+                    index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, false, argv.深);
+                    break;
+                default:
+                    console.log(`未找到命令'${argv._[2]}'`);
+                }
+            } else {
+                console.log('使用"橙式 帮助"命令可获取帮助信息:)');
         }
     } else {
-        console.log('使用"橙式 帮助"命令可获取帮助信息:)');
-}
+        childProcess.exec('橙式 更新字典', (error) => {
+            if (error !== null) {
+                console.log(`运行错误！: ${error}`);
+            } else index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, true, argv.深);
+        });
+    }
+});
