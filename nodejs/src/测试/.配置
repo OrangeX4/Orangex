@@ -1,9 +1,10 @@
 {
-    "模式":"覆盖",
+    "模式":"合并",
     "优先选择":"字典文件",
-    "字典文件":"dict.json",
-    "字典网址":"",
-    "github-release":"",
-    "后缀":"",
+    "字典文件":"D:/project/Orangex/nodejs/bin/dict.json",
+    "字典网址":"https://api.github.com/repos/Orangex4/Orangex/releases/latest",
+    "github-release":"https://api.github.com/repos/Orangex4/Orangex/releases/latest",
+    "集聚发布":"https://api.github.com/repos/Orangex4/Orangex/releases/latest",
+    "后缀":".橙",
     "分割符":"￥"
 }

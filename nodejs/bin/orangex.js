@@ -10,10 +10,10 @@ const fs = require('fs');
 const minimist = require('minimist');
 
 const argv = minimist(process.argv);
-console.log('控制台目录:');
-console.log(process.cwd());
-console.log('命令行参数:');
-console.log(argv);
+// console.log('控制台目录:');
+// console.log(process.cwd());
+// console.log('命令行参数:');
+// console.log(argv);
 
 const index = require('../dist/main.js');
 
