@@ -17,6 +17,10 @@ console.log(argv);
 
 const index = require('../dist/main.js');
 
+const dictFile = `${Path.dirname(argv._[1])}/dict.json`;
+const workPath = Path.normalize(process.cwd());
+
+// 更新字典文件
 function updateDict() {
     console.log('正在更新字典文件, 请稍等一会:)');
     index.readDictFileByGithubRelease('https://api.github.com/repos/Orangex4/Orangex/releases/latest').then((dict) => {
@@ -42,10 +46,18 @@ fs.exists(`${__dirname}/dict.json`, (isExist) => {
                     updateDict();
                     break;
                 case '英转汉':
-                    index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, true, argv.深);
+                    if (argv._[3]) {
+                        index.translaterFileWithDictFile(argv._[3], dictFile, true);
+                    } else {
+                        index.translaterFileTreeWithDictFile(workPath, dictFile, true, argv.深);
+                    }
                     break;
                 case '汉转英':
-                    index.translaterFileTree(Path.normalize(process.cwd()), `${Path.dirname(argv._[1])}/dict.json`, false, argv.深);
+                    if (argv._[3]) {
+                        index.translaterFileWithDictFile(argv._[3], dictFile, false);
+                    } else {
+                        index.translaterFileTreeWithDictFile(workPath, dictFile, false, argv.深);
+                    }
                     break;
                 default:
                     console.log(`未找到命令'${argv._[2]}'`);

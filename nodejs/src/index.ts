@@ -8,29 +8,30 @@
 // import * as Path from 'path';
 import mainTest from './test/main.test';
 import * as fileReplacer from './lib/fileReplacer';
-import * as replacer from './lib/replacer';
+// import * as replacer from './lib/replacer';
 import * as utils from './lib/utils';
 
 
 export function test() {
     mainTest();
 }
-export async function translaterFileTree(path: string,
+export async function translaterFileWithDictFile(path: string,
+    dictFilePath: string,
+    isWithExtname: boolean) {
+        fileReplacer.translaterFileWithDictFile(path, dictFilePath, isWithExtname);
+}
+export async function translaterFileTreeWithDictFile(path: string,
     dictFilePath: string,
     isWithExtname: boolean,
     isDeep: boolean) {
-    const data = await utils.readFile(dictFilePath);// .then((data) => {
-    const dictionary = JSON.parse(data);
-    const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
-    if (isWithExtname) fileReplacer.translaterFileTree(path, dict, isWithExtname, isDeep);
-    else fileReplacer.translaterFileTree(path, replacer.turnDict(dict), isWithExtname, isDeep);
-    // });
+        fileReplacer.translaterFileTreeWithDictFile(path, dictFilePath, isWithExtname, isDeep);
 }
 export function readDictFileByGithubRelease(url: string): Promise<string> {
     return utils.readWithWebAndRedirect(url);
 }
 exports.test = test;
-exports.translaterFileTree = translaterFileTree;
+exports.translaterFileTreeWithDictFile = translaterFileTreeWithDictFile;
+exports.translaterFileWithDictFile = translaterFileWithDictFile;
 exports.readDictFileByGithubRelease = readDictFileByGithubRelease;
 
 // translaterFileTree(Path.normalize('D:/project/Orangex/nodejs/src/测试'), false, false);

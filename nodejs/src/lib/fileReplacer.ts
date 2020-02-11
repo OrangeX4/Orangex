@@ -7,7 +7,24 @@ import * as Path from 'path';
 import * as replacer from './replacer';
 import * as utils from './utils';
 
-
+/**
+ * @description 根据情况选择保存成的文件名
+ * @param {string} preUrl 被翻译的文件的路径
+ * @param {string} postUrl 被写入内容的文件的路径
+ * @return {Promise <string>} 返回一个Promise
+ */
+function getSavedFileName(filename: string,
+    dict: replacer.DictMap,
+    isWithExtname: boolean,
+    extName: string): string {
+    if (isWithExtname) {
+        return `${Path.dirname(filename)}/${replacer.replaceContent(Path.basename(filename), dict).content}${extName}`;
+    }
+    return `${Path.dirname(filename)}/${replacer.replaceContent(
+        Path.basename(filename
+        .slice(0, filename.length - extName.length)), dict)
+        .content}`;
+}
 /**
  * @description 翻译一个文件并写入一个文件内
  * @param {string} preUrl 被翻译的文件的路径
@@ -56,7 +73,7 @@ export function isInIgnore(path: string,
 export function isInIgnoreFile(path: string,
     ignoreFilePath: string = '.忽略',
     isWithExtname: boolean,
-    extName: string = '.橙'): Promise < boolean > {
+    extName: string): Promise < boolean > {
     return new Promise((resolve, reject) => {
         utils.readFile(ignoreFilePath).then((data) => {
             if (isInIgnore(path, data, isWithExtname, extName)) resolve(true);
@@ -90,20 +107,33 @@ export function translaterFileTree(path: string,
             if (value.encoding) encoding = value.encoding.toLowerCase();
             if (encoding === 'utf-8' && !isInIgnore(value.filename, ignoreContent, isWithExtname)) {
                 // 真正重要的部分,在这里修改其他内容
-                if (isWithExtname) {
-                    const savedFileName = `${Path.dirname(value.filename)}/${replacer.replaceContent(Path.basename(value.filename), dict).content}${extName}`;
-                    translateFile(value.filename, savedFileName, dict);
-                } else {
-                    // const turnedDict = replacer.turnDict(dict);
-                    const savedFileName = `${Path.dirname(value.filename)}/${replacer.replaceContent(
-                        Path.basename(value.filename
-                        .slice(0, value.filename.length - extName.length)), dict)
-                        .content}`;
-                    translateFile(value.filename,
-                        savedFileName,
-                        dict);
+                translateFile(value.filename,
+                    getSavedFileName(value.filename, dict, isWithExtname, extName), dict);
                 }
-            }
-        });
+            },
+        );
     });
+}
+export async function translaterFileTreeWithDictFile(path: string,
+    dictFilePath: string,
+    isWithExtname: boolean,
+    isDeep: boolean) {
+    const data = await utils.readFile(dictFilePath);// .then((data) => {
+    const dictionary = JSON.parse(data);
+    // TODO：修改这里的dictionary.computer
+    const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
+    if (isWithExtname) translaterFileTree(path, dict, isWithExtname, isDeep);
+    else translaterFileTree(path, replacer.turnDict(dict), isWithExtname, isDeep);
+    // });
+}
+export async function translaterFileWithDictFile(path: string,
+    dictFilePath: string,
+    isWithExtname: boolean) {
+    const data = await utils.readFile(dictFilePath);// .then((data) => {
+    const dictionary = JSON.parse(data);
+    // TODO：修改这里的dictionary.computer
+    const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
+    if (isWithExtname) translateFile(path, getSavedFileName(path, dict, isWithExtname, '.橙'), dict);
+    else translateFile(path, getSavedFileName(path, replacer.turnDict(dict), isWithExtname, '.橙'), dict);
+    // });
 }
