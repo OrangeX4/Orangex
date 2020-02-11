@@ -19,6 +19,19 @@ const index = require('../dist/main.js');
 
 const dictFile = `${Path.dirname(argv._[1])}/dict.json`;
 const workPath = Path.normalize(process.cwd());
+const helpInfo = `帮助: 
+使用"橙式 测试"开始测试.
+使用"橙式 字典 一个词"查看'一个词'在字典中对应的映射值.
+使用"橙式 更新字典"进行字典文件的更新.
+使用"橙式 英转汉"可以将当前目录的文本文件替换成中文.(加上后缀后保存).
+使用"橙式 英转汉 一个文件"可以转换'一个文件'成中文.
+使用"橙式 英转汉 -深"可以替换当前目录及其深层目录所有文本文件替换成中文.
+命令"橙式 汉转英"用法同英转汉.注意:只会替换有后缀(如'.橙')的文件.
+------
+提示:只支持UTF-8格式的文件.
+提示:中文输入法下使用'Ctrl + .'可以替换中英文标点.
+------
+需要更多信息? 欢迎前往: https://github.com/OrangeX4/Orangex`;
 
 // 更新字典文件
 function updateDict() {
@@ -37,7 +50,7 @@ fs.exists(`${__dirname}/dict.json`, (isExist) => {
         if (argv._[2]) {
             switch (argv._[2]) {
                 case '帮助':
-                    console.log('帮助信息: 使用"橙式 测试"开始测试.');
+                    console.log(helpInfo);
                     break;
                 case '测试':
                     index.test();
