@@ -49,12 +49,15 @@ export function translateFile(preUrl: string,
 export function isInIgnore(path: string,
     ignoreContent: string,
     isWithExtname: boolean,
-    extName: string = '.橙'): boolean {
+    extName: string,
+    ignoreFileName: string,
+    configName: string): boolean {
     let returnValue = false;
     if (isWithExtname) {
         if (path.endsWith(extName)) { returnValue = true; }
     } else if (!path.endsWith(extName)) { returnValue = true; }
-    if (path.endsWith('.忽略')) { returnValue = true; }
+    if (path.endsWith(ignoreFileName)) { returnValue = true; }
+    if (path.endsWith(configName)) { returnValue = true; }
     ignoreContent.replace(/\r\n/g, '\n').split('\n').forEach((str) => {
         if (str === '') return;
         const newPath = Path.resolve(Path.normalize(path));
@@ -71,12 +74,14 @@ export function isInIgnore(path: string,
  * @return {Promise < boolean >} 一个Promise,用then调用后传入一个布尔值, 如果在忽略文件里就返回true, 不在就返回false
  */
 export function isInIgnoreFile(path: string,
-    ignoreFilePath: string = '.忽略',
+    ignoreFilePath: string,
     isWithExtname: boolean,
-    extName: string): Promise < boolean > {
+    extName: string,
+    configName: string): Promise < boolean > {
     return new Promise((resolve, reject) => {
         utils.readFile(ignoreFilePath).then((data) => {
-            if (isInIgnore(path, data, isWithExtname, extName)) resolve(true);
+            if (isInIgnore(path, data, isWithExtname, extName,
+                Path.basename(ignoreFilePath), configName)) resolve(true);
             else resolve(false);
         }, (err) => { reject(err); });
     });
@@ -88,6 +93,7 @@ export function isInIgnoreFile(path: string,
  * @param {boolean} isWithExtname 英转汉就填true, 汉转英就填false, 默认为true
  * @param {boolean} isDeep 是否进入到子目录
  * @param {string} ignoreFilePath 忽略文件路径,可用相对路径
+ * @param {string} configFilePath 配置文件路径,可用相对路径
  * @param {string} extName 要加上的拓展名, 记得要包括点号, 默认'.orz'
  */
 export function translaterFileTree(path: string,
@@ -95,7 +101,8 @@ export function translaterFileTree(path: string,
     isWithExtname: boolean,
     isDeep: boolean,
     ignoreFilePath: string = '.忽略',
-    extName: string = '.橙') {
+    extName: string = '.橙',
+    configFilePath: string = '.配置') {
     let ignoreContent = ignoreFilePath;
     // 获取ignore文件的内容
     utils.readFile(ignoreFilePath).then((data) => {
@@ -105,7 +112,7 @@ export function translaterFileTree(path: string,
         Object.values(data).forEach((value) => {
             let encoding = '';
             if (value.encoding) encoding = value.encoding.toLowerCase();
-            if (encoding === 'utf-8' && !isInIgnore(value.filename, ignoreContent, isWithExtname)) {
+            if (encoding === 'utf-8' && !isInIgnore(value.filename, ignoreContent, isWithExtname, extName, Path.basename(ignoreFilePath), Path.basename(configFilePath))) {
                 // 真正重要的部分,在这里修改其他内容
                 translateFile(value.filename,
                     getSavedFileName(value.filename, dict, isWithExtname, extName), dict);
@@ -128,12 +135,13 @@ export async function translaterFileTreeWithDictFile(path: string,
 }
 export async function translaterFileWithDictFile(path: string,
     dictFilePath: string,
-    isWithExtname: boolean) {
+    isWithExtname: boolean,
+    extName: string = '.橙') {
     const data = await utils.readFile(dictFilePath);// .then((data) => {
     const dictionary = JSON.parse(data);
     // TODO：修改这里的dictionary.computer
     const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
-    if (isWithExtname) translateFile(path, getSavedFileName(path, dict, isWithExtname, '.橙'), dict);
-    else translateFile(path, getSavedFileName(path, replacer.turnDict(dict), isWithExtname, '.橙'), dict);
+    if (isWithExtname) translateFile(path, getSavedFileName(path, dict, isWithExtname, extName), dict);
+    else translateFile(path, getSavedFileName(path, replacer.turnDict(dict), isWithExtname, extName), dict);
     // });
 }

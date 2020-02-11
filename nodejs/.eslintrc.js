@@ -26,6 +26,7 @@ module.exports = {
     "import/extensions":"off",
     "import/prefer-default-export":"off",
     "function-paren-newline":"off",
-    "no-underscore-dangle":"off"
+    "no-underscore-dangle":"off",
+    "max-len":"off"
   },
 };
