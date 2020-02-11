@@ -37,7 +37,9 @@ export function translateFile(preUrl: string,
     // TODO:修复replaceWithSplit
     return utils.readFile(preUrl)
         .then((data) => utils.writeFile(postUrl,
-            replacer.replaceWithSplit(data, dict).content));
+            replacer.replaceWithSplit(data, dict).content), () => {
+                console.log(`错误: 未找到文件"${preUrl}"`);
+            });
 }
 /**
  * @description 判断一个文件路径是否在忽略文件里面
@@ -115,7 +117,9 @@ export function translaterFileTree(path: string,
             if (encoding === 'utf-8' && !isInIgnore(value.filename, ignoreContent, isWithExtname, extName, Path.basename(ignoreFilePath), Path.basename(configFilePath))) {
                 // 真正重要的部分,在这里修改其他内容
                 translateFile(value.filename,
-                    getSavedFileName(value.filename, dict, isWithExtname, extName), dict);
+                    getSavedFileName(value.filename, dict, isWithExtname, extName), dict).then(() => {
+                        console.log(`转换文件:${Path.normalize(value.filename)}`);
+                    });
                 }
             },
         );
