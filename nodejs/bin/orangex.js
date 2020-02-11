@@ -17,10 +17,9 @@ console.log(argv);
 
 const index = require('../dist/main.js');
 
-const dictFile = `${Path.dirname(argv._[1])}/dict.json`;
+const dictFile = `${__dirname}/dict.json`;
 const workPath = Path.normalize(process.cwd());
-const helpInfo = `帮助: 
-使用"橙式 测试"开始测试.
+const helpInfo = `帮助:
 使用"橙式 字典 一个词"查看'一个词'在字典中对应的映射值.
 使用"橙式 更新字典"进行字典文件的更新.
 使用"橙式 英转汉"可以将当前目录的文本文件替换成中文.(加上后缀后保存).
@@ -37,7 +36,7 @@ const helpInfo = `帮助:
 function updateDict() {
     console.log('正在更新字典文件, 请稍等一会:)');
     index.readDictFileByGithubRelease('https://api.github.com/repos/Orangex4/Orangex/releases/latest').then((dict) => {
-        fs.writeFile(`${__dirname}/dict.json`, dict, (err) => {
+        fs.writeFile(dictFile, dict, (err) => {
             if (err) console.log('读取最新字典失败!');
             else console.log('读取最新字典成功!');
         });
@@ -45,7 +44,7 @@ function updateDict() {
 }
 
 // 判断字典文件是否存在, 不存在就执行updateDict, 存在就进一步判断
-fs.exists(`${__dirname}/dict.json`, (isExist) => {
+fs.exists(dictFile, (isExist) => {
     if (isExist) {
         if (argv._[2]) {
             switch (argv._[2]) {
@@ -64,16 +63,16 @@ fs.exists(`${__dirname}/dict.json`, (isExist) => {
                     break;
                 case '英转汉':
                     if (argv._[3]) {
-                        index.translaterFileWithDictFile(argv._[3], dictFile, true);
+                        index.translaterFileWithDictFile(argv._[3], dictFile, true, argv.志);
                     } else {
-                        index.translaterFileTreeWithDictFile(workPath, dictFile, true, argv.深);
+                        index.translaterFileTreeWithDictFile(workPath, dictFile, true, argv.深, argv.志);
                     }
                     break;
                 case '汉转英':
                     if (argv._[3]) {
-                        index.translaterFileWithDictFile(argv._[3], dictFile, false);
+                        index.translaterFileWithDictFile(argv._[3], dictFile, false, argv.志);
                     } else {
-                        index.translaterFileTreeWithDictFile(workPath, dictFile, false, argv.深);
+                        index.translaterFileTreeWithDictFile(workPath, dictFile, false, argv.深, argv.志);
                     }
                     break;
                 default:

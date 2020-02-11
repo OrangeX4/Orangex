@@ -10,10 +10,14 @@
 export interface DictMap {
     [index: string]: string
 }
-export interface ObjectReplaced {
+export interface ObjectByReplace {
     content: string,
     success: string[],
     fail: string[]
+}
+export interface ObjectBySplit {
+    content: string,
+    returnArray: (string | ObjectByReplace)[]
 }
 
 // module.exports ={replaceContent:replaceContent};
@@ -84,9 +88,9 @@ export function turnDict(dict: DictMap): DictMap {
  * @description 用dict字典替换相应内容,这是一个同步函数
  * @param {string} content 要转换的内容
  * @param {DictMap} dict 使用的字典
- * @return {ObjectReplaced} 返回替换后的内容,格式为ObjectReplaced
+ * @return {ObjectByReplace} 返回替换后的内容,格式为ObjectReplaced
  */
-export function replaceContent(contentStr: string, dict: DictMap): ObjectReplaced {
+export function replaceContent(contentStr: string, dict: DictMap): ObjectByReplace {
     let content = contentStr;
     const fail: string[] = [];
     const success: string[] = [];
@@ -125,13 +129,10 @@ export function replaceContent(contentStr: string, dict: DictMap): ObjectReplace
  *    returnArray:[{ content:'ChangedContent', success: [Array], fail: [Array] },'UnchangedContent']
  * }
  */
-export function replaceWithSplit(content: string, dict: DictMap): {
-    content: string,
-    returnArray: (string | ObjectReplaced)[]
-} {
+export function replaceWithSplit(content: string, dict: DictMap): ObjectBySplit {
     const strArray = content.split(split);
     let str = '';
-    const objectArray: (string | ObjectReplaced)[] = [];
+    const objectArray: (string | ObjectByReplace)[] = [];
     let returnValue;
     Object.keys(strArray).forEach((i) => {
         const index = parseInt(i, 10);

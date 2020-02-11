@@ -19,14 +19,16 @@ export function test() {
 }
 export async function translaterFileWithDictFile(path: string,
     dictFilePath: string,
-    isWithExtname: boolean) {
-        fileReplacer.translaterFileWithDictFile(path, dictFilePath, isWithExtname);
+    isWithExtname: boolean,
+    isSaveLog: boolean) {
+        fileReplacer.translaterFileWithDictFile(path, dictFilePath, isWithExtname, isSaveLog);
 }
 export async function translaterFileTreeWithDictFile(path: string,
     dictFilePath: string,
     isWithExtname: boolean,
-    isDeep: boolean) {
-        fileReplacer.translaterFileTreeWithDictFile(path, dictFilePath, isWithExtname, isDeep);
+    isDeep: boolean,
+    isSaveLog: boolean) {
+        fileReplacer.translaterFileTreeWithDictFile(path, dictFilePath, isWithExtname, isDeep, isSaveLog);
 }
 export function readDictFileByGithubRelease(url: string): Promise<string> {
     return utils.readWithWebAndRedirect(url);
@@ -45,7 +47,8 @@ exports.translaterFileWithDictFile = translaterFileWithDictFile;
 exports.readDictFileByGithubRelease = readDictFileByGithubRelease;
 exports.readDict = readDict;
 
-// translaterFileTree(Path.normalize('D:/project/Orangex/nodejs/src/测试'), false, false);
+
+// translaterFileTreeWithDictFile('D:/project/Orangex/nodejs/src/测试', 'D:/project/Orangex/nodejs/bin/dict.json', false, false, true);
 // test();
 // const argv = minimist(process.argv);
 // console.log('Console Path:');
