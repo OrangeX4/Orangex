@@ -20,7 +20,7 @@ const index = require('../dist/main.js');
 function updateDict() {
     console.log('正在更新字典文件, 请稍等一会:)');
     index.readDictFileByGithubRelease('https://api.github.com/repos/Orangex4/Orangex/releases/latest').then((dict) => {
-        fs.writeFile(`${Path.dirname(argv._[1])}/dict.json`, dict, (err) => {
+        fs.writeFile(`${__dirname}/dict.json`, dict, (err) => {
             if (err) console.log('读取最新字典失败!');
             else console.log('读取最新字典成功!');
         });
@@ -28,7 +28,7 @@ function updateDict() {
 }
 
 // 判断字典文件是否存在, 不存在就执行updateDict, 存在就进一步判断
-fs.exists(`${Path.dirname(argv._[1])}/dict.json`, (isExist) => {
+fs.exists(`${__dirname}/dict.json`, (isExist) => {
     if (isExist) {
         if (argv._[2]) {
             switch (argv._[2]) {
