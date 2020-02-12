@@ -8,7 +8,7 @@
  * @describe 键值对字典
  */
 export interface DictMapFile {
-    [index: string]: DictMap | string
+    [index: string]: DictMap
 }
 export interface DictMap {
     [index: string]: string

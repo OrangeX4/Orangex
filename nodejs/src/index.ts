@@ -27,9 +27,8 @@ export async function replaceCommand(command: string, dictFilePath: string) {
     // console.log(`系统类型:${os.platform().toString()}`);
     const data = await utils.readFile(dictFilePath);
     const dictionary = JSON.parse(data);
-    // TODO：修改这里的dictionary.computer
-    const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
-    const comm = replacer.replaceContent(command, replacer.turnDict(dict)).content;
+    const dict = replacer.mergeDict(dictionary.common, dictionary.command);
+    const comm = replacer.replaceWithSplit(command, replacer.turnDict(dict)).content;
     childProcess.exec(command, { encoding: 'buffer' }, (err, stdout, stderr) => {
         if (err) console.log(`命令执行错误!\n命令:${comm}`);
         else if (os.platform().toString() === 'win32') {

@@ -35,8 +35,8 @@ fs.exists(dictFile, (isExist) => {
             console.log('没有输入任何命令.');
             return;
         }
-        command = command.replace(/￥/g, '&&');
-        console.log(command);
+        command = command.replace(/￥￥/g, '&&');
+        // console.log(command);
         index.replaceCommand(`${command}`, dictFile);
     } else {
         // 更新字典

@@ -8,7 +8,7 @@ export default function start() {
     function testFunc(dict: string) {
         replacer.setSplit('￥'); // ￥
         const dictionary = JSON.parse(dict);
-        const mergeDict = replacer.mergeDict(dictionary.common, dictionary.computer);
+        const mergeDict = dictionary.common;
         // console.log('mergeDict:');
         // console.log(mergeDict);
         const returnObject = replacer.replaceWithSplit(str, mergeDict);

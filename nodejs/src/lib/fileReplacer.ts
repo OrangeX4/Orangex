@@ -3,17 +3,91 @@
  * @author <a href="https://github.com/OrangeX4/">OrangeX4</a>
  * @version 0.1
  */
+import * as fs from 'fs';
+// import { promisify } from 'util';
 import * as Path from 'path';
 import * as replacer from './replacer';
 import * as utils from './utils';
 
 export interface LogContent {
-    失败:FailureLog
+    失败: FailureLog
 }
-interface FailureLog {
+export interface FailureLog {
     [index: string]: string[]
 }
 
+// -------------全局变量---------------
+let extName: string = '.橙';
+let isMerge: boolean = true;
+let originDictFile: string = '';
+let newDictFile: string = '';
+let dictFile: replacer.DictMapFile;
+let currentDict: replacer.DictMap;
+
+// let dict:replacer.DictMap = {};
+/**
+ * @description 改变后缀名
+ * @param {string} newExtName 写入的后缀名
+ */
+export function setExtName(newExtName: string) {
+    extName = newExtName;
+}
+async function readConfigAndLoadDict(): Promise < boolean > {
+    if (fs.existsSync('.配置')) {
+        const data: string = await utils.readFile('.配置');
+        let config;
+        try {
+            config = JSON.parse(data);
+        } catch {
+            console.log('错误: 配置文件格式无效');
+            return false;
+        }
+        try {
+            if (config.字典文件) {
+                newDictFile = config.字典文件;
+                if (config.模式) {
+                    switch (config.模式) {
+                        case '合并':
+                            isMerge = true;
+                            break;
+                        case '替换':
+                            isMerge = false;
+                            break;
+                        default:
+                            console.log('错误: 配置文件中模式字段无效');
+                            return false;
+                    }
+                }
+                if (isMerge) {
+                    dictFile = replacer.mergeDictFile(
+                        JSON.parse(await utils.readFile(originDictFile)),
+                        JSON.parse(await utils.readFile(newDictFile)));
+                } else {
+                    dictFile = JSON.parse(await utils.readFile(newDictFile));
+                }
+            } else {
+                dictFile = JSON.parse(await utils.readFile(originDictFile));
+            }
+        } catch {
+            console.log('错误: 字典文件格式无效');
+            return false;
+        }
+        if (config.后缀名) extName = config.后缀名;
+        if (config.分隔符) replacer.setSplit(config.分隔符);
+        currentDict = dictFile.common;
+        // console.log('读取配置文件成功!');
+        return true;
+    }
+    // 不存在配置文件执行下面内容
+    try {
+        dictFile = JSON.parse(await utils.readFile(originDictFile));
+    } catch {
+        console.log('错误: 字典文件格式无效');
+        return false;
+    }
+    currentDict = dictFile.common;
+    return true;
+}
 /**
  * @description 根据情况选择保存成的文件名,同步函数
  * @param {string} filename 被翻译的文件名
@@ -23,15 +97,13 @@ interface FailureLog {
  * @return {Promise <string>} 返回应该保存成的文件名
  */
 function getSavedFileName(filename: string,
-    dict: replacer.DictMap,
-    isWithExtname: boolean,
-    extName: string): string {
+    isWithExtname: boolean): string {
     if (isWithExtname) {
-        return `${Path.dirname(filename)}/${replacer.replaceContent(Path.basename(filename), dict).content}${extName}`;
+        return `${Path.dirname(filename)}/${replacer.replaceContent(Path.basename(filename), currentDict).content}${extName}`;
     }
     return `${Path.dirname(filename)}/${replacer.replaceContent(
         Path.basename(filename
-        .slice(0, filename.length - extName.length)), dict)
+        .slice(0, filename.length - extName.length)), currentDict)
         .content}`;
 }
 /**
@@ -41,17 +113,16 @@ function getSavedFileName(filename: string,
  * @return {Promise <string>} 返回一个Promise
  */
 export function translateFile(preUrl: string,
-    postUrl: string,
-    dict: replacer.DictMap): Promise < void | replacer.ObjectBySplit > {
+    postUrl: string): Promise < void | replacer.ObjectBySplit > {
     // TODO:修复replaceWithSplit
     return utils.readFile(preUrl)
         .then((data) => {
-            const returnObject = replacer.replaceWithSplit(data, dict);
+            const returnObject = replacer.replaceWithSplit(data, currentDict);
             utils.writeFile(postUrl, returnObject.content);
             return returnObject;
         }, () => {
-                console.log(`错误: 未找到文件"${preUrl}"`);
-            });
+            console.log(`错误: 未找到文件"${preUrl}"`);
+        });
 }
 /**
  * @description 判断一个文件路径是否在忽略文件里面
@@ -62,15 +133,24 @@ export function translateFile(preUrl: string,
  */
 export function isInIgnore(path: string,
     ignoreContent: string,
-    isWithExtname: boolean,
-    extName: string): boolean {
+    isWithExtname: boolean): boolean {
     let returnValue = false;
     if (isWithExtname) {
-        if (path.endsWith(extName)) { returnValue = true; }
-    } else if (!path.endsWith(extName)) { returnValue = true; }
-    if (path.endsWith('.忽略')) { returnValue = true; }
-    if (path.endsWith('.配置')) { returnValue = true; }
-    if (path.endsWith('.日志')) { returnValue = true; }
+        if (path.endsWith(extName)) {
+            returnValue = true;
+        }
+    } else if (!path.endsWith(extName)) {
+        returnValue = true;
+    }
+    if (path.endsWith('.忽略')) {
+        returnValue = true;
+    }
+    if (path.endsWith('.配置')) {
+        returnValue = true;
+    }
+    if (path.endsWith('.日志')) {
+        returnValue = true;
+    }
     ignoreContent.replace(/\r\n/g, '\n').split('\n').forEach((str) => {
         if (str === '') return;
         const newPath = Path.resolve(Path.normalize(path));
@@ -88,13 +168,14 @@ export function isInIgnore(path: string,
  */
 export function isInIgnoreFile(path: string,
     ignoreFilePath: string,
-    isWithExtname: boolean,
-    extName: string): Promise < boolean > {
+    isWithExtname: boolean): Promise < boolean > {
     return new Promise((resolve, reject) => {
         utils.readFile(ignoreFilePath).then((data) => {
-            if (isInIgnore(path, data, isWithExtname, extName)) resolve(true);
+            if (isInIgnore(path, data, isWithExtname)) resolve(true);
             else resolve(false);
-        }, (err) => { reject(err); });
+        }, (err) => {
+            reject(err);
+        });
     });
 }
 /**
@@ -108,14 +189,14 @@ export function isInIgnoreFile(path: string,
  * @param {string} extName 要加上的拓展名, 记得要包括点号, 默认'.橙'
  */
 export function translaterFileTree(path: string,
-    dict: replacer.DictMap,
     isWithExtname: boolean,
     isDeep: boolean,
     isSaveLog: boolean,
-    ignoreFilePath: string = '.忽略',
-    extName: string = '.橙') {
+    ignoreFilePath: string = '.忽略') {
     let ignoreContent = ignoreFilePath;
-    const logContent: LogContent = { 失败: {} };
+    const logContent: LogContent = {
+        失败: {},
+    };
     // 获取ignore文件的内容
     utils.readFile(ignoreFilePath).then((data) => {
         ignoreContent = data;
@@ -123,14 +204,21 @@ export function translaterFileTree(path: string,
         // ignore文件为空就直接explorer
     }, () => utils.explorer(path, isDeep)).then((data) => { // 再进行文件树翻译
         // 用promises来并行执行每一个文件的翻译
-        const promises: Promise<void | replacer.ObjectBySplit>[] = [];
+        const promises: Promise < void | replacer.ObjectBySplit > [] = [];
         Object.values(data).forEach((value) => {
             let encoding = '';
             if (value.encoding) encoding = value.encoding.toLowerCase();
-            if (encoding === 'utf-8' && !isInIgnore(value.filename, ignoreContent, isWithExtname, extName)) {
+            if (encoding === 'utf-8' && !isInIgnore(value.filename, ignoreContent, isWithExtname)) {
                 // 真正重要的部分,在这里修改其他内容
+                const pathExtName = Path.extname(path);
+                if (pathExtName === '') currentDict = dictFile.common;
+                else if (dictFile[path.slice(1, path.length)]) {
+                    currentDict = replacer.mergeDict(dictFile.common,
+                        dictFile[path.slice(1, path.length)]);
+                }
+                if (!isWithExtname) currentDict = replacer.turnDict(currentDict);
                 promises.push(
-                    translateFile(value.filename, getSavedFileName(value.filename, dict, isWithExtname, extName), dict).then((returnObject) => {
+                    translateFile(value.filename, getSavedFileName(value.filename, isWithExtname)).then((returnObject) => {
                         console.log(`转换文件:${Path.normalize(value.filename)}`);
                         if (isSaveLog && returnObject) {
                             logContent.失败[Path.normalize(value.filename)] = [];
@@ -141,9 +229,8 @@ export function translaterFileTree(path: string,
                             });
                         }
                     }));
-                }
-            },
-        );
+            }
+        });
         // Promise.all来并行执行各个文件翻译的promise
         return Promise.all(promises);
     }).then(() => {
@@ -159,30 +246,31 @@ export async function translaterFileTreeWithDictFile(path: string,
     isWithExtname: boolean,
     isDeep: boolean,
     isSaveLog: boolean) {
-    const data = await utils.readFile(dictFilePath);// .then((data) => {
-    const dictionary = JSON.parse(data);
-    // TODO：修改这里的dictionary.computer
-    const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
-    if (isWithExtname) translaterFileTree(path, dict, isWithExtname, isDeep, isSaveLog);
-    else translaterFileTree(path, replacer.turnDict(dict), isWithExtname, isDeep, isSaveLog);
+    originDictFile = dictFilePath;
+    await readConfigAndLoadDict();
+    if (isWithExtname) translaterFileTree(path, isWithExtname, isDeep, isSaveLog);
+    else translaterFileTree(path, isWithExtname, isDeep, isSaveLog);
     // });
 }
 export async function translaterFileWithDictFile(path: string,
     dictFilePath: string,
     isWithExtname: boolean,
-    isSaveLog: boolean,
-    extName: string = '.橙') {
-    const data = await utils.readFile(dictFilePath);// .then((data) => {
-    const dictionary = JSON.parse(data);
-    // TODO：修改这里的dictionary.computer
-    const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
-    // 根据isWithExtname选择是否翻转字典, 即英转汉还是汉转英
-    let newDict;
-    if (isWithExtname) newDict = dict;
-    else newDict = replacer.turnDict(dict);
-    translateFile(path, getSavedFileName(path, newDict, isWithExtname, extName), dict).then((returnObject) => {
-        if (isSaveLog && data) {
-            const logContent: LogContent = { 失败: {} };
+    isSaveLog: boolean) {
+    originDictFile = dictFilePath;
+    await readConfigAndLoadDict();
+    // 判断文件后缀名然后选择合并方式
+    const pathExtName = Path.extname(path);
+    if (pathExtName === '') currentDict = dictFile.common;
+    else if (dictFile[path.slice(1, path.length)]) {
+        currentDict = replacer.mergeDict(dictFile.common,
+            dictFile[path.slice(1, path.length)]);
+    }
+    if (!isWithExtname) currentDict = replacer.turnDict(currentDict);
+    translateFile(path, getSavedFileName(path, isWithExtname)).then((returnObject) => {
+        if (isSaveLog) {
+            const logContent: LogContent = {
+                失败: {},
+            };
             // logContent.失败[path] = data.returnArray
             if (returnObject) {
                 logContent.失败[Path.normalize(path)] = [];
@@ -193,7 +281,7 @@ export async function translaterFileWithDictFile(path: string,
                 });
             }
             utils.writeFile('.日志', JSON.stringify(logContent, null, 2))
-            .then(() => console.log('输出日志成功!'), () => console.log('输出日志失败!'));
+                .then(() => console.log('输出日志成功!'), () => console.log('输出日志失败!'));
         }
     });
 }
