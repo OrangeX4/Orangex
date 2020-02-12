@@ -28,8 +28,8 @@ export async function replaceCommand(command: string, dictFilePath: string) {
     const data = await utils.readFile(dictFilePath);
     const dictionary = JSON.parse(data);
     const dict = replacer.mergeDict(dictionary.common, dictionary.command);
-    const comm = replacer.replaceWithSplit(command, replacer.turnDict(dict)).content;
-    childProcess.exec(command, {
+    const comm = replacer.replaceWithSplit(command, replacer.turnDict(dict), false).content;
+    childProcess.exec(comm, {
         encoding: 'buffer',
     }, (err, stdout, stderr) => {
         if (err) {

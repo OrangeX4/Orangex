@@ -31,7 +31,6 @@
         "do":"执行",
         "double":"双精型",
         "enum":"枚举",
-        "eval":"硬编码",
         "export":"导出",
         "extend":"拓展",
         "final":"终量",
@@ -89,15 +88,19 @@
         "ruby":"红宝石",
         "repository":"仓库",
         "repo":"仓",
-        "console":"控制台"
+        "console":"控制台",
+        "git":"集",
+        "github":"集聚",
+        "log":"日志",
+        "help":"帮助"
     },
     "js":{
-
+        "eval":"硬编码"
     },
     "command":{
-        "default":"缺省"
-    },
-    "linux":{
-        "sudo":"超管"
+        "mkdir":"新建文件夹",
+        "dir":"文件夹",
+        "ls":"展示"
+
     }
 }

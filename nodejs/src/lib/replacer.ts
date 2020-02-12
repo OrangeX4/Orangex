@@ -113,13 +113,14 @@ export function turnDict(dict: DictMap): DictMap {
  * @param {DictMap} dict 使用的字典
  * @return {ObjectByReplace} 返回替换后的内容,格式为ObjectReplaced
  */
-export function replaceContent(contentStr: string, dict: DictMap): ObjectByReplace {
+export function replaceContent(contentStr: string, dict: DictMap, isUsingPunctuation: boolean = true): ObjectByReplace {
     let content = contentStr;
     const fail: string[] = [];
     const success: string[] = [];
     // 定义一个用来递归的内部函数
     function replaceCont(str: string): string {
-        const patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/;
+        let patt = /[\u4E00-\u9FA5A-Za-z0-9_$-]+/;
+        if (!isUsingPunctuation) patt = /[\u4E00-\u9FA5A-Za-z0-9]+/;
         const match = str.match(patt);
         if (!match) {
             return str;
@@ -152,7 +153,7 @@ export function replaceContent(contentStr: string, dict: DictMap): ObjectByRepla
  *    returnArray:[{ content:'ChangedContent', success: [Array], fail: [Array] },'UnchangedContent']
  * }
  */
-export function replaceWithSplit(content: string, dict: DictMap): ObjectBySplit {
+export function replaceWithSplit(content: string, dict: DictMap, isUsingPunctuation: boolean = true): ObjectBySplit {
     const strArray = content.split(split);
     let str = '';
     const objectArray: (string | ObjectByReplace)[] = [];
@@ -160,7 +161,7 @@ export function replaceWithSplit(content: string, dict: DictMap): ObjectBySplit 
     Object.keys(strArray).forEach((i) => {
         const index = parseInt(i, 10);
         if (index % 2 === 0) {
-            returnValue = replaceContent(strArray[index], dict);
+            returnValue = replaceContent(strArray[index], dict, isUsingPunctuation);
             str += returnValue.content;
             objectArray.push(returnValue);
         } else {

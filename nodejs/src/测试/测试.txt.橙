@@ -1,44 +1,8 @@
-导入 * as replacer from '../lib/replacer';
-导入 * as utils from '../lib/utils';
-导入 * as fileReplacer from '../lib/fileReplacer';
-控制台
-导出 默认 函数 () {
-    常量 str = '若 爪纹 爪  默认 若  ddd 中文注释 1数字-Head $';
-
-    函数 testFunc(dict: string) {
-        replacer.setSplit('');
-        常量 dictionary = JSON.parse(dict);
-        常量 mergeDict = replacer.mergeDict(dictionary.common, dictionary.computer);
-        常量 returnObject = replacer.replaceWithSplit(str, mergeDict);
-        控制台.log('All:');
-        控制台.log(returnObject);
-        // 控制台.log('Array content:');
-        // 控制台.log(returnObject.returnArray[0]);
-        控制台.log('Content:');
-        控制台.log(returnObject.content);
-        控制台.log('Translater:');
-        控制台.log(replacer.replaceWithSplit(returnObject.content,
-            replacer.turnDict(mergeDict)).content);
+导出 默认 函数 日志 () {
+    常量 测试 = '你好, 世界; hello world!';
+    若 () {
+        控制台.日志(测试);
     }
-    // utils.readWithWebAndRedirect(testFunc);
-    utils.readWithFile(testFunc);
-    常量 testDict = {
-        a: '1',
-        b: '2',
-        c: '3',
-        d: '5',
-        e: '6',
-    };
-    控制台.log('Merge:');
-    控制台.log(replacer.mergeDict({
-        a: '1',
-        b: '2',
-        c: '3',
-    }, {
-        c: '4',
-        d: '5',
-        e: '6',
-    }));
-    控制台.log('Turn:');
-    控制台.log(replacer.turnDict(testDict));
 }
+
+日志();
