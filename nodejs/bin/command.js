@@ -27,7 +27,14 @@ fs.exists(dictFile, (isExist) => {
         let command = '';
         process.argv.forEach((value, i) => {
             if (i !== 0 && i !== 1) {
-                command = `${command + value} `;
+                // 命令中有双引号, 说明用了\"转义
+                const newValue = value.replace(/"/g, '\\"');
+                if (value.search(' ') === -1) {
+                    command = `${command + newValue} `;
+                } else {
+                    // 参数中有空格, 说明调用时使用了双引号包裹
+                    command = `${command}"${value}" `;
+                }
             }
         });
         command = command.trim();

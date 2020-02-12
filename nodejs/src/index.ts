@@ -29,15 +29,36 @@ export async function replaceCommand(command: string, dictFilePath: string) {
     const dictionary = JSON.parse(data);
     const dict = replacer.mergeDict(dictionary.common, dictionary.command);
     const comm = replacer.replaceWithSplit(command, replacer.turnDict(dict)).content;
-    childProcess.exec(command, { encoding: 'buffer' }, (err, stdout, stderr) => {
-        if (err) console.log(`命令执行错误!\n命令:${comm}`);
-        else if (os.platform().toString() === 'win32') {
+    childProcess.exec(command, {
+        encoding: 'buffer',
+    }, (err, stdout, stderr) => {
+        if (err) {
+            console.log(`命令执行错误!\n命令:${comm}\n错误:\n${err.message}\n翻译:\n${replacer.replaceWithSplit(err.message, dict).content}`);
+        } else if (os.platform().toString() === 'win32') {
             // TODO: 解决编码问题
-            const newStdout = iconv.decode(stdout, 'cp936');
-            const newStderr = iconv.decode(stderr, 'cp936');
-            console.log(newStdout, newStderr);
+            const oriStdout = iconv.decode(stdout, 'cp936');
+            const oriStderr = iconv.decode(stderr, 'cp936');
+            const newStdout = replacer.replaceWithSplit(oriStdout, dict).content;
+            const newStderr = replacer.replaceWithSplit(oriStderr, dict).content;
+            if (oriStdout !== '' || oriStderr !== '') {
+                console.log('---输出---');
+                console.log(oriStdout, oriStderr);
+                console.log('---翻译---');
+                console.log(newStdout, newStderr);
+            }
             // console.log(iconv.decode(stdout, 'cp936'), iconv.decode(stderr, 'cp936'));
-        } else console.log(stdout, stderr);
+        } else {
+            const oriStdout = stdout.toString();
+            const oriStderr = stderr.toString();
+            const newStdout = replacer.replaceWithSplit(oriStdout, dict).content;
+            const newStderr = replacer.replaceWithSplit(oriStderr, dict).content;
+            if (oriStdout !== '' || oriStderr !== '') {
+                console.log('---输出---');
+                console.log(oriStdout, oriStderr);
+                console.log('---翻译---');
+                console.log(newStdout, newStderr);
+            }
+        }
     });
 }
 // replaceCommand('dir', 'D:/project/Orangex/nodejs/bin/dict.json');
@@ -45,20 +66,20 @@ export async function translaterFileWithDictFile(path: string,
     dictFilePath: string,
     isWithExtname: boolean,
     isSaveLog: boolean) {
-        fileReplacer.translaterFileWithDictFile(path, dictFilePath, isWithExtname, isSaveLog);
+    fileReplacer.translaterFileWithDictFile(path, dictFilePath, isWithExtname, isSaveLog);
 }
 export async function translaterFileTreeWithDictFile(path: string,
     dictFilePath: string,
     isWithExtname: boolean,
     isDeep: boolean,
     isSaveLog: boolean) {
-        fileReplacer.translaterFileTreeWithDictFile(path, dictFilePath, isWithExtname, isDeep, isSaveLog);
+    fileReplacer.translaterFileTreeWithDictFile(path, dictFilePath, isWithExtname, isDeep, isSaveLog);
 }
-export function readDictFileByGithubRelease(url: string): Promise<string> {
+export function readDictFileByGithubRelease(url: string): Promise < string > {
     return utils.readWithWebAndRedirect(url);
 }
 export async function readDict(content: string, dictFilePath: string) {
-    const data = await utils.readFile(dictFilePath);// .then((data) => {
+    const data = await utils.readFile(dictFilePath); // .then((data) => {
     const dict = JSON.parse(data).common;
     if (dict[content]) console.log(dict[content]);
     else if (replacer.turnDict(dict)[content]) console.log(replacer.turnDict(dict)[content]);
