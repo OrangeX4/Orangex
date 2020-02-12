@@ -1,7 +1,7 @@
 {
-    "version":"0.0.2",
+    "version":"0.0.3",
     "common":{
-        "if":"如果",
+        "if":"若",
         "for":"对于",
         "else":"否则",
         "while":"当",

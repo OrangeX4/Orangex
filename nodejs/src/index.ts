@@ -6,6 +6,7 @@
 // import minimist from 'minimist';
 // 进行测试
 // import * as Path from 'path';
+// import * as fs from 'fs';
 import * as childProcess from 'child_process';
 // import { promisify } from 'util';
 import * as os from 'os';
@@ -14,6 +15,7 @@ import mainTest from './test/main.test';
 import * as fileReplacer from './lib/fileReplacer';
 import * as replacer from './lib/replacer';
 import * as utils from './lib/utils';
+
 
 // const encoding = 'cp936';
 // const binaryEncoding = 'binary';
@@ -74,8 +76,7 @@ exports.readDict = readDict;
 
 // translaterFileTreeWithDictFile('D:/project/Orangex/nodejs/src/测试', 'D:/project/Orangex/nodejs/bin/dict.json', false, false, true);
 // test();
-// const argv = minimist(process.argv);
-// console.log('Console Path:');
-// console.log(process.cwd());
-// console.log('Arguments:');
-// console.log(argv);
+
+// const oriData = JSON.parse(fs.readFileSync('D:\\project\\Orangex\\nodejs\\bin\\dict.json', { encoding: 'utf-8' }).toString());
+// const othData = JSON.parse(fs.readFileSync('D:\\project\\Orangex\\map\\dict.json', { encoding: 'utf-8' }).toString());
+// console.log(replacer.mergeDictFile(oriData, othData));

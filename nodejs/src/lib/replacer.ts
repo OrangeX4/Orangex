@@ -7,6 +7,9 @@
 /**
  * @describe 键值对字典
  */
+export interface DictMapFile {
+    [index: string]: DictMap | string
+}
 export interface DictMap {
     [index: string]: string
 }
@@ -58,7 +61,27 @@ export function mergeDict(...args: DictMap[]): DictMap {
     });
     return mergeValue;
 }
-
+/**
+ * @description 合并字典文件内的值,方式为后者覆盖前者
+ * @param {DictMap[]} arguments 参数群
+ * @return {DictMap} 返回合并后的字典
+ */
+export function mergeDictFile(...dictMapFileArgs: DictMapFile[]): DictMapFile {
+    const mergeValue: DictMapFile = {};
+    // 对文件数组进行遍历
+    Object.values(dictMapFileArgs).forEach((dictMapFileArg) => {
+        // 对每个文件的不同属性进行遍历, 如command和command属性
+        Object.keys(dictMapFileArg).forEach((arg) => {
+            // 进行合并
+            if (typeof (dictMapFileArg[arg]) === 'string') {
+                mergeValue[arg] = dictMapFileArg[arg];
+            } else if (mergeValue[arg] && typeof (mergeValue[arg]) !== 'string') {
+                mergeValue[arg] = mergeDict(mergeValue[arg] as DictMap, dictMapFileArg[arg] as DictMap);
+            } else mergeValue[arg] = dictMapFileArg[arg];
+        });
+    });
+    return mergeValue;
+}
 /**
  * @description 翻转字典的键与值,要求键与值一一对应
  * @param {DictMap} dict 要翻转的字典
