@@ -1,7 +1,7 @@
 {
     "version":{"version":"0.0.2"},
     "common":{
-        "if":"若",
+        "if":"如果",
         "for":"对于",
         "else":"否则",
         "while":"当",
@@ -92,7 +92,13 @@
         "git":"集",
         "github":"集聚",
         "log":"日志",
-        "help":"帮助"
+        "help":"帮助",
+        "add":"加",
+        "commit":"提交",
+        "all":"所有",
+        "command":"命令小",
+        "failed":"失败的",
+        "Command":"命令"
     },
     "js":{
         "eval":"硬编码"
