@@ -28,12 +28,12 @@ export async function replaceCommand(command: string, dictFilePath: string) {
     // TODO：修改这里的dictionary.computer
     const dict = replacer.mergeDict(dictionary.common, dictionary.computer);
     const comm = replacer.replaceContent(command, replacer.turnDict(dict)).content;
-    childProcess.exec(command, (err, stdout, stderr) => {
+    childProcess.exec(command, { encoding: 'buffer' }, (err, stdout, stderr) => {
         if (err) console.log(`命令执行错误!\n命令:${comm}`);
         else if (os.platform().toString() === 'win32') {
             // TODO: 解决编码问题
-            const newStdout = iconv.decode(Buffer.from(stdout), 'cp936');
-            const newStderr = iconv.decode(Buffer.from(stderr), 'cp936');
+            const newStdout = iconv.decode(stdout, 'cp936');
+            const newStderr = iconv.decode(stderr, 'cp936');
             console.log(newStdout, newStderr);
             // console.log(iconv.decode(stdout, 'cp936'), iconv.decode(stderr, 'cp936'));
         } else console.log(stdout, stderr);

@@ -31,12 +31,13 @@ fs.exists(dictFile, (isExist) => {
             }
         });
         command = command.trim();
-        // console.log(command);
         if (command === '') {
             console.log('没有输入任何命令.');
             return;
         }
-        index.replaceCommand(command, dictFile);
+        command = command.replace(/￥/g, '&&');
+        console.log(command);
+        index.replaceCommand(`${command}`, dictFile);
     } else {
         // 更新字典
         updateDict();
