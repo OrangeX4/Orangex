@@ -13,9 +13,9 @@ module.exports = (env = {}) => {
 //   };
 const config = {
     entry: ['./src/index.ts'],
-    mode: env.development ? 'development' : 'production',
+    mode: env.production ? 'development' : 'production',
     target: 'node',
-    devtool: env.development ? 'cheap-eval-source-map' : false,
+    devtool: env.production ? 'cheap-eval-source-map' : false,
     resolve: {
       // Tells Webpack what files to watch      
       extensions: ['.ts', '.js'],

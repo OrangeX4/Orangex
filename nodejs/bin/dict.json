@@ -1,5 +1,5 @@
 {
-    "version":{"version":"0.0.2"},
+    "version":{"version":"1.0.2"},
     "common":{
         "if":"如果",
         "for":"对于",
@@ -96,9 +96,20 @@
         "add":"加",
         "commit":"提交",
         "all":"所有",
-        "command":"命令小",
+        "command":"命令",
         "failed":"失败的",
-        "Command":"命令"
+        "Command":"命令大",
+        "copy":"复制",
+        "paste":"粘贴",
+        "cut":"剪切",
+        "start":"开始",
+        "type":"类型",
+        "set":"置",
+        "get":"取",
+        "call":"调用",
+        "shift":"转换",
+        "end":"结束",
+        "title":"标题"
     },
     "js":{
         "eval":"硬编码"
@@ -106,7 +117,23 @@
     "command":{
         "mkdir":"新建文件夹",
         "dir":"文件夹",
-        "ls":"展示"
-
+        "ls":"展示",
+        "winver":"视窗版本",
+        "notepad":"笔记本",
+        "taskmgr":"任务管理器",
+        "explorer":"探索者",
+        "osk":"屏幕键盘",
+        "shutdown":"关机",
+        "net":"网络",
+        "ping":"呯",
+        "ipconfig":"ip配置",
+        "kill":"杀死",
+        "del":"删",
+        "cd":"切换",
+        "rmdir":"删除文件夹",
+        "rename":"重命名",
+        "cls":"清屏",
+        "echo":"回声",
+        "pause":"暂停"
     }
 }
