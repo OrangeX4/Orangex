@@ -1,6 +1,6 @@
 {
   "name": "orangex",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Orangex is a translater for Chinese.",
   "bin": {
     "橙式": "./bin/orangex.js",
@@ -40,8 +40,8 @@
     "@types/minimist": "^1.2.0",
     "@types/node": "^10.17.14",
     "@types/node-fetch": "^2.5.4",
-    "@typescript-eslint/eslint-plugin": "^2.19.0",
-    "@typescript-eslint/parser": "^2.19.0",
+    "@typescript-eslint/eslint-plugin": "^2.19.2",
+    "@typescript-eslint/parser": "^2.19.2",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.1",
@@ -49,7 +49,7 @@
     "ts-loader": "^6.2.1",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   }
 }

@@ -25,6 +25,7 @@ export function readFile(url: string): Promise < string > {
             // console.log('读取文件:-------------------------------------');
             // console.log(data);
             if (err) reject(err);
+            // const str = data.toString(jschardet.detect(data).encoding);
             resolve(data);
         });
     });

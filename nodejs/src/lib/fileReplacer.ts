@@ -208,7 +208,7 @@ export function translaterFileTree(path: string,
         Object.values(data).forEach((value) => {
             let encoding = '';
             if (value.encoding) encoding = value.encoding.toLowerCase();
-            if (encoding === 'utf-8' && !isInIgnore(value.filename, ignoreContent, isWithExtname)) {
+            if ((encoding === 'utf-8' || encoding === 'ascii') && !isInIgnore(value.filename, ignoreContent, isWithExtname)) {
                 // 真正重要的部分,在这里修改其他内容
                 const pathExtName = Path.extname(path);
                 if (pathExtName === '') currentDict = dictFile.common;
